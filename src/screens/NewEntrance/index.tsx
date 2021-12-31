@@ -1,9 +1,11 @@
 import React , {useState, useEffect} from 'react';
-import { ScrollView, Animated,  Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
+import { ScrollView, Animated,  TextInput, Text, TouchableOpacity, View, SafeAreaView } from 'react-native';
 
 import { styles } from './styles'
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather,FontAwesome5, AntDesign } from '@expo/vector-icons';
+
+import DatePicker from 'react-native-datepicker';
 
 import {useNavigation} from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -14,6 +16,8 @@ type NewEntranceScreenProp = StackNavigationProp<RootStackParamList, 'NewEntranc
 export default function NewEntrance() {
   const navigation = useNavigation<NewEntranceScreenProp>();
   const [ animate, setAnimate ] = useState(new Animated.Value(1000))
+  const  [ date ,  setDate ]  =  useState<any>( new  Date ( ) ) 
+  const [ isFixed, setIsFixed ] = useState(false)
 
   useEffect(() => navigation.addListener('blur', () => {
 
@@ -55,6 +59,84 @@ useEffect(() => navigation.addListener('focus', () => {
         }}
             colors={['#7CE3B1', '#7CC4B1']}
         >
+           <View style={[styles.containerBranch]}>
+            <Text style={styles.title}>
+              Novo Ganho
+            </Text>
+          </View>
+
+          <View style={styles.modal}>
+            <View style={styles.fieldSet}>
+              <Text style={styles.label}>
+                Nome
+              </Text>
+              <TextInput 
+                style={styles.input} 
+                placeholder='Digite o nome do ganho'
+                placeholderTextColor={'rgb(0, 181, 170)'}
+              />
+            </View>
+
+            <View style={styles.fieldSet}>
+              <Text style={styles.label}>
+                Valor
+              </Text>
+              <TextInput 
+                style={styles.input} 
+                placeholder='R$'
+                placeholderTextColor={'rgb(0, 181, 170)'}
+              />
+            </View>
+
+            <TouchableOpacity
+              style={[styles.fieldSet, { flexDirection: 'row', justifyContent: 'center', marginVertical: 24}]}
+              activeOpacity={0.8}
+              onPress={() => setIsFixed(!isFixed)}
+            >
+
+              <Text style={styles.label}>
+                Fixa
+              </Text>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={styles.check}
+                  onPress={() => setIsFixed(!isFixed)}
+                >
+                  {
+                    isFixed &&
+                      <View style={{flex: 1, backgroundColor: 'rgba(0, 181, 170, 0.4)', borderRadius: 10}} />
+                  }
+                </TouchableOpacity>
+            </TouchableOpacity>
+
+            <View style={styles.fieldSet}>
+              <Text style={styles.label}>
+                Data
+              </Text>
+              <DatePicker
+                showIcon={false}
+                androidMode="spinner"
+                style={styles.dateBox}
+                date={date}
+                mode="date"
+                placeholder="DD/MM/YYYY"
+                format="DD/MM/YYYY"
+                confirmBtnText="Chọn"
+                cancelBtnText="Hủy"
+                customStyles={{
+                  dateInput: {
+                    backgroundColor: 'rgba(0, 181, 170, 0.1)',
+                    borderWidth: 0,
+                    borderBottomWidth: 1,
+                    borderBottomColor: 'rgb(0, 181, 170)',
+                    
+                  },
+                }}
+              onDateChange={(date) => setDate(date)}
+        />
+            </View>
+
+          </View>
 
         </LinearGradient>
       </Animated.View>

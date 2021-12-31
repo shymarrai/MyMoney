@@ -67,7 +67,10 @@ useEffect(() => navigation.addListener('focus', () => {
 
             {/* ENTRADAS */}
 
-          <View style={styles.card}>
+          <TouchableOpacity 
+            style={styles.card}
+            activeOpacity={0.8}
+          >
             <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
               <Text style={styles.title}>
                 Entradas
@@ -80,11 +83,14 @@ useEffect(() => navigation.addListener('focus', () => {
                 R$ 0,00
               </Text>
             </View>
-          </View>
+          </TouchableOpacity>
 
 
             {/* SAÍDAS */}
-          <View style={styles.card}>
+          <TouchableOpacity 
+            style={styles.card}
+            activeOpacity={0.8}
+          >
             <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
               <Text style={styles.title}>
                 Saídas
@@ -97,7 +103,7 @@ useEffect(() => navigation.addListener('focus', () => {
                 R$ 0,00
               </Text>
             </View>
-          </View>
+          </TouchableOpacity>
 
             {/* CARTEIRA
             <View style={styles.card}>
@@ -116,7 +122,10 @@ useEffect(() => navigation.addListener('focus', () => {
           </View> */}
 
             {/* POUPANÇA */}
-            <View style={[styles.card, { backgroundColor: '#49AA26' }]}>
+            <TouchableOpacity 
+              style={[styles.card, { backgroundColor: '#49AA26' }]}
+              activeOpacity={0.8}
+            >
             <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
               <Text style={[styles.title, { color: '#fff'}]}>
                 Poupança
@@ -129,7 +138,7 @@ useEffect(() => navigation.addListener('focus', () => {
                 R$ 0,00
               </Text>
             </View>
-          </View>
+          </TouchableOpacity>
 
 
           <View style={[styles.containerBranch, { marginTop: 120}]}>
@@ -155,6 +164,8 @@ useEffect(() => navigation.addListener('focus', () => {
               </Text>
               <AntDesign name="pluscircle" size={24} color="#fff" />
             </TouchableOpacity>
+
+
           </View>
           </LinearGradient>
         </Animated.View>
