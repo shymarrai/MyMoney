@@ -1,7 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import Principal from './src/screens/Principal';
 import AppLoading from 'expo-app-loading';
+import {NavigationContainer} from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+const Stack = createStackNavigator();
+
 import {
   useFonts,
   Inter_100Thin,
@@ -10,6 +14,10 @@ import {
   Inter_300Light,
   Inter_400Regular,
 } from '@expo-google-fonts/inter';
+
+import Principal from './src/screens/Principal';
+import NewEntrance from './src/screens/NewEntrance';
+import NewExpanse from './src/screens/New Expanse';
 
 
 
@@ -26,7 +34,16 @@ export default function App() {
     return <AppLoading />;
   } else {
     return (
-      <Principal />
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{headerShown: false}}
+        >
+          <Stack.Screen component={Principal} name="Principal" />
+          <Stack.Screen component={NewEntrance} name="NewEntrance" />
+          <Stack.Screen component={NewExpanse} name="NewExpanse" />
+
+        </Stack.Navigator>
+      </NavigationContainer>
     );
   }
 }
