@@ -4,7 +4,7 @@ export const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-
+        
       },
       branch:{
         fontFamily: 'Inter_600SemiBold',
@@ -44,7 +44,6 @@ export const styles = StyleSheet.create({
       fontSize: 36
     },
     button:{
-      backgroundColor: 'red',
       width: 150,
       padding: 12,
       flexDirection:'row',

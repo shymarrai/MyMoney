@@ -49,12 +49,12 @@ useEffect(() => navigation.addListener('focus', () => {
             flex:1,
             paddingVertical: 60, 
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
         }}
           colors={['#FFF', '#f0f0f0']}
         >
           <View style={[styles.containerBranch, 
-            { marginBottom: 40,}]}
+            { marginBottom: 30,}]}
           >
             <Text style={styles.Mybranch}>
               My
@@ -141,31 +141,18 @@ useEffect(() => navigation.addListener('focus', () => {
           </TouchableOpacity>
 
 
-          <View style={[styles.containerBranch, { marginTop: 120}]}>
+          <View style={[styles.containerBranch, { top: 20}]}>
 
             <TouchableOpacity
-              style={[styles.button, { backgroundColor: '#E94A65' }]}
-              activeOpacity={0.8}
-              onPress={() => navigation.navigate('NewExpanse')}
+              style={[styles.button, { backgroundColor: '#364869' }]}
+              activeOpacity={0.9}
+              onPress={() => navigation.navigate('NewTransaction')}
             >
               <Text style={styles.textButton}>
-                Nova Saída
+                Transações
               </Text>
-              <AntDesign name="minuscircle" size={24} color="#fff" />
+              <FontAwesome5 name="money-bill-alt" size={24} color="#fff" />
             </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[styles.button, { backgroundColor: '#6AC694'}]}
-              activeOpacity={0.8}
-              onPress={() => navigation.navigate('NewEntrance')}
-            >
-              <Text style={styles.textButton}>
-                Nova Entrada
-              </Text>
-              <AntDesign name="pluscircle" size={24} color="#fff" />
-            </TouchableOpacity>
-
-
           </View>
           </LinearGradient>
         </Animated.View>

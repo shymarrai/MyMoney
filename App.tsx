@@ -17,7 +17,7 @@ import {
 
 import Principal from './src/screens/Principal';
 import NewEntrance from './src/screens/NewEntrance';
-import NewExpanse from './src/screens/New Expanse';
+import NewTransaction from './src/screens/NewTransaction';
 
 
 
@@ -40,7 +40,7 @@ export default function App() {
         >
           <Stack.Screen component={Principal} name="Principal" />
           <Stack.Screen component={NewEntrance} name="NewEntrance" />
-          <Stack.Screen component={NewExpanse} name="NewExpanse" />
+          <Stack.Screen component={NewTransaction} name="NewTransaction" />
 
         </Stack.Navigator>
       </NavigationContainer>

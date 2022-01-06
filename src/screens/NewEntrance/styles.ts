@@ -6,6 +6,12 @@ export const styles = StyleSheet.create({
         backgroundColor: '#FFF',
 
       },
+      goBack:{
+        position: 'absolute',
+        top: 50,
+        left:10,
+        padding: 20
+      },
       modal:{
         width: 300,
         height: 350,
@@ -36,7 +42,7 @@ export const styles = StyleSheet.create({
         borderBottomWidth: 1,
         paddingHorizontal: 14,
         fontFamily: 'Inter_400Regular',
-        color: 'rgb(0, 181, 170)',
+        color: '#364869',
         fontSize: 14,
         marginTop: 4
 
@@ -68,5 +74,21 @@ export const styles = StyleSheet.create({
         color: '#FFF',
         fontSize: 36,
         marginTop: -60
+      },
+      button:{
+        width: 150,
+        padding: 12,
+        flexDirection:'row',
+        justifyContent: 'space-around',
+        marginHorizontal: 20,
+        borderRadius: 100,
+        elevation: 2,
+        marginVertical: 25
+      },
+      textButton:{
+        fontFamily: 'Inter_600SemiBold',
+        color: '#6AC694',
+        fontSize: 14,
+        
       }
 })

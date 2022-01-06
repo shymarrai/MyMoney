@@ -1,3 +1,4 @@
+import AppLoading from 'expo-app-loading';
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
@@ -5,6 +6,12 @@ export const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#FFF',
 
+      },
+      goBack:{
+        position: 'absolute',
+        top: 50,
+        left:10,
+        padding: 20
       },
       modal:{
         width: 300,
@@ -15,7 +22,6 @@ export const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         alignSelf: 'center',
         elevation: 10,
-        shadowColor: '#FFF'
       },
       fieldSet:{
         width: '100%',
@@ -24,19 +30,16 @@ export const styles = StyleSheet.create({
       },
       label:{
         fontFamily: 'Inter_300Light',
-        color: '#364869',
+        
         fontSize: 14,
         marginHorizontal: 14
 
       }, input:{
         height: 40,
-        borderBottomColor: 'rgb(233, 74, 95)',
-        backgroundColor: 'rgba(233, 74, 95, 0.1)',
         borderRadius: 2,
         borderBottomWidth: 1,
         paddingHorizontal: 14,
         fontFamily: 'Inter_400Regular',
-        color: 'rgb(233, 74, 95)',
         fontSize: 14,
         marginTop: 4
 
@@ -44,7 +47,6 @@ export const styles = StyleSheet.create({
       dateBox:{
         marginTop: 4,
         width: '100%',
-        color: 'rgb(233, 74, 95)',
       },
       check:{
         width: 18,
@@ -52,7 +54,6 @@ export const styles = StyleSheet.create({
         padding: 1,
         borderRadius: 20,
         borderWidth: 2,
-        borderColor: 'rgb(233, 74, 95)',
         alignSelf: 'center'
       },
       containerBranch:{
@@ -65,8 +66,39 @@ export const styles = StyleSheet.create({
       },
       title:{
         fontFamily: 'Inter_400Regular',
-        color: '#FFF',
         fontSize: 36,
         marginTop: -60
+      },
+      button:{
+        width: 150,
+        padding: 12,
+        flexDirection:'row',
+        justifyContent: 'space-around',
+        marginHorizontal: 20,
+        borderRadius: 100,
+        elevation: 2,
+        marginVertical: 25
+      },
+      textButton:{
+        fontFamily: 'Inter_600SemiBold',
+        color: '#FFF',
+        fontSize: 14,
+        
+      },
+      option:{
+        width: 250,
+        borderBottomColor: '#364869',
+        borderBottomWidth: 1,
+        paddingHorizontal: 10,
+        paddingVertical: 14,
+        flexDirection: 'row',
+        alignItems: 'center'
+        
+      },
+      textCategory:{
+        fontFamily: 'Inter_600SemiBold',
+        color: '#364869',
+        fontSize: 14,
+        marginHorizontal: 14
       }
 })
