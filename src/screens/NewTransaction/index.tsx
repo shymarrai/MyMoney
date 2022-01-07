@@ -1,6 +1,5 @@
 import React , {useState, useEffect} from 'react';
-import { ScrollView, Animated,  TextInput, Text, TouchableOpacity, View, SafeAreaView, FlatList } from 'react-native';
-
+import { Modal, Animated,  TextInput, Text, TouchableOpacity, View, SafeAreaView, FlatList } from 'react-native';
 import { styles } from './styles'
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather, Ionicons, AntDesign } from '@expo/vector-icons';
@@ -12,16 +11,16 @@ import {useNavigation} from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../RootStackParamList';
 import { CategorySelect } from '../../components/CategorySelect';
-import { ModalBottom } from '../../components/ModalBottom';
 
-type NewEntranceScreenProp = StackNavigationProp<RootStackParamList, 'NewEntrance'>;
+type NewTransactionScreenProp = StackNavigationProp<RootStackParamList, 'NewTransaction'>;
 
 export default function NewTransaction() {
-  const navigation = useNavigation<NewEntranceScreenProp>();
+  const navigation = useNavigation<NewTransactionScreenProp>();
   const [ animate, setAnimate ] = useState(new Animated.Value(1000))
   const  [ date ,  setDate ]  =  useState<any>( new  Date ( ) ) 
   const [ isFixed, setIsFixed ] = useState(false)
   const [ modal, setModal ] = useState(false)
+  const [ category, setCategory ] = useState('Categorias')
   const [ colors,  setColors ] = useState({
     color: '#364869' ,
     color_light: 'rgba(54, 72, 105,0.1)' ,
@@ -175,6 +174,7 @@ useEffect(() => navigation.addListener('focus', () => {
                   backgroundColor: colors.color_light,
                 }]} 
                 placeholder='R$'
+                keyboardType="numeric"
                 placeholderTextColor={colors.color}
               />
             </View>
@@ -208,7 +208,7 @@ useEffect(() => navigation.addListener('focus', () => {
             </View>
 
             <View style={styles.fieldSet}>
-              <CategorySelect title="Categoria" 
+              <CategorySelect title={category}
                 backgroundColor={colors.color_light}
                 textColor={colors.color}
                 onPress={handleModal}
@@ -244,29 +244,44 @@ useEffect(() => navigation.addListener('focus', () => {
               </TouchableOpacity>
           </View>
 
-          <ModalBottom
-            isVisible={modal} 
-            setModal={handleModal}
-            height={2}
-          >
-            <View style={{marginTop: 10, width: '100%'}}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modal}
+            onRequestClose={() => {
+              handleModal()
+            }}
+            >
+            <TouchableOpacity
+              activeOpacity={1}
+              style={styles.modalWrapper}
+              onPress={() => handleModal()}
+            >
+              <View style={styles.select}>
+                <View style={styles.line} />
                 <FlatList 
                   data={categories}
-                  style={{width: '100%'}}
-                  contentContainerStyle={{width: '100%', height: 300}}
+                  showsVerticalScrollIndicator={false}
                   keyExtractor={(item) => item.key}
                   renderItem={({ item }: any) => (
-                    <View style={styles.option}>
+                    <TouchableOpacity
+                      activeOpacity={0.8} 
+                      style={styles.option}
+                      onPress={() => {
+                        setCategory(item.name)
+                        handleModal()
+                      }}
+                    >
                       <Feather name={item.icon} />
                       <Text style={styles.textCategory}>
                         { item.name }
                       </Text>
-                    </View>
+                    </TouchableOpacity>
                   )}
                 />
-            </View>
-
-          </ModalBottom>
+              </View>
+            </TouchableOpacity>
+          </Modal>
           
 
         </LinearGradient>
