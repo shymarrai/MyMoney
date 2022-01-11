@@ -19,7 +19,7 @@ export default function Principal() {
 
     Animated.timing(animate, {
         toValue: -1000,
-        duration: 1000,
+        duration: 300,
         useNativeDriver: true
     }).start();
 }), []);
@@ -30,7 +30,7 @@ useEffect(() => navigation.addListener('focus', () => {
 
     Animated.timing(animate, {
         toValue: 0,
-        duration: 1000,
+        duration: 300,
         useNativeDriver: true
     }).start();
 }), []);
@@ -149,9 +149,9 @@ useEffect(() => navigation.addListener('focus', () => {
               onPress={() => navigation.navigate('NewTransaction')}
             >
               <Text style={styles.textButton}>
-                Transações
+                Nova Transação
               </Text>
-              <FontAwesome5 name="money-bill-alt" size={24} color="#fff" />
+              <AntDesign name="pluscircle" size={24} color={"#FFF"} />
             </TouchableOpacity>
           </View>
           </LinearGradient>

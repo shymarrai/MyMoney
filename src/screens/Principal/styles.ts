@@ -44,9 +44,9 @@ export const styles = StyleSheet.create({
       fontSize: 36
     },
     button:{
-      width: 150,
       padding: 12,
       flexDirection:'row',
+      alignItems: 'center',
       justifyContent: 'space-around',
       marginHorizontal: 20,
       borderRadius: 100,
@@ -56,6 +56,7 @@ export const styles = StyleSheet.create({
       fontFamily: 'Inter_600SemiBold',
       color: '#FFF',
       fontSize: 14,
+      marginHorizontal: 10
       
     }
 })

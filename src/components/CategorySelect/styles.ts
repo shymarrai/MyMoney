@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
         borderRadius: 2,
         height: 40,
         paddingHorizontal: 14,
-        marginTop: 16,
+        marginTop: 6,
         borderBottomWidth: 1,
     },
     icon:{

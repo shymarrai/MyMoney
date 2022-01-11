@@ -8,9 +8,6 @@ export const styles = StyleSheet.create({
 
       },
       goBack:{
-        position: 'absolute',
-        top: 50,
-        left:10,
         padding: 20
       },
       modal:{
@@ -22,6 +19,7 @@ export const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         alignSelf: 'center',
         elevation: 10,
+        marginTop: 12
       },
       fieldSet:{
         width: '100%',
@@ -34,7 +32,8 @@ export const styles = StyleSheet.create({
         fontSize: 14,
         marginHorizontal: 14
 
-      }, input:{
+      }, 
+      input:{
         height: 40,
         borderRadius: 2,
         borderBottomWidth: 1,
@@ -56,25 +55,35 @@ export const styles = StyleSheet.create({
         borderWidth: 2,
         alignSelf: 'center'
       },
-      containerBranch:{
-        width: '100%',
+      // containerBranch:{
+      //   width: '100%',
+      //   flexDirection: 'row',
+      //   alignSelf: 'center', 
+      //   alignItems: 'center',
+      //   marginBottom: 20,
+      //   justifyContent: 'center',
+      // },
+      containerButtons:{
+        width: '90%',
         flexDirection: 'row',
         alignSelf: 'center', 
-        alignItems: 'center',
+        alignItems: 'flex-end',
         marginBottom: 20,
-        justifyContent: 'center',
+        justifyContent: 'space-between',
       },
       title:{
         fontFamily: 'Inter_400Regular',
-        fontSize: 36,
-        marginTop: -60
+        fontSize: 26,
+        alignSelf: 'center',
+        marginLeft: '10%'
       },
       button:{
-        width: 150,
+        width: 160,
         padding: 12,
         flexDirection:'row',
+        alignItems: 'center',
         justifyContent: 'space-around',
-        marginHorizontal: 20,
+        marginHorizontal: 10,
         borderRadius: 100,
         elevation: 2,
         marginVertical: 25
@@ -83,14 +92,13 @@ export const styles = StyleSheet.create({
         fontFamily: 'Inter_600SemiBold',
         color: '#FFF',
         fontSize: 14,
-        
+        marginHorizontal: 6
       },
       option:{
         width: 250,
-        borderBottomColor: '#364869',
-        borderBottomWidth: 1,
         paddingHorizontal: 10,
-        paddingVertical: 14,
+        paddingVertical: 12,
+        marginVertical: 2,
         flexDirection: 'row',
         alignItems: 'center'
         
@@ -126,4 +134,19 @@ export const styles = StyleSheet.create({
         alignSelf: 'center'
     
     },
+    containerCards:{
+      width: '100%',
+      alignItems: 'center' ,
+    },
+    wrapper:{
+      flex: 1,
+      alignSelf: 'center',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: -50
+    },
+    error:{
+      fontFamily: 'Inter_400Regular',
+      fontSize: 12,
+    }
 })
