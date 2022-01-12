@@ -95,12 +95,13 @@ export const styles = StyleSheet.create({
         marginHorizontal: 6
       },
       option:{
-        width: 250,
+        width: 280,
         paddingHorizontal: 10,
-        paddingVertical: 16,
+        paddingVertical: 20,
         marginVertical: 2,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: "#fafafa"
         
       },
       textCategory:{

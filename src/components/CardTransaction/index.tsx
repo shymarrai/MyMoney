@@ -19,8 +19,8 @@ data
                 </Text>
                 
                 {
-                    data.pay ?
-                      <View style={[styles.select,data.type === 'down' ? {backgroundColor: '#E94A5A' } : {backgroundColor: '#6AC694'}]} />
+                    data.paid ?
+                        <View style={[styles.select,data.type === 'down' ? {backgroundColor: '#E94A5A' } : {backgroundColor: '#6AC694'}]} />
                     :
                         <View style={[styles.select,{borderColor: '#364869', borderWidth: 1.6}]} />
                 }

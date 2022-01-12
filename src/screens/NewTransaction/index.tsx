@@ -48,7 +48,7 @@ export interface TransactionProps{
   type: 'up' | 'down';
   category: Category;
   date: string;
-  pay: boolean
+  paid: boolean
 }
 
 type NewTransactionScreenProp = StackNavigationProp<RootStackParamList, 'NewTransaction'>;
@@ -209,7 +209,7 @@ export default function NewTransaction() {
       amountFormated: amountFormated,
       // date: date.toString().split().indexOf('-') != -1 ? date : getDateActual(),
       date: getDateActual(date),
-      isFixed: pay,
+      paid: pay,
       type: type,
       category: category
       
@@ -535,7 +535,7 @@ useEffect(() => navigation.addListener('focus', () => {
                     renderItem={({ item }: any) => (
                       <TouchableOpacity
                         activeOpacity={0.8} 
-                        style={[styles.option, {backgroundColor: colors.color_light}]}
+                        style={[styles.option]}
                         onPress={() => {
                           setCategory({
                             key: item.key,
@@ -548,7 +548,7 @@ useEffect(() => navigation.addListener('focus', () => {
                           
                         }}
                       >
-                        <Feather name={item.icon} />
+                        <Feather name={item.icon} color={item.color} size={18}/>
                         <Text style={styles.textCategory}>
                           { item.name }
                         </Text>

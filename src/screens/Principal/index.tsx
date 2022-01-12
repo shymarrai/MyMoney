@@ -32,15 +32,39 @@ export default function Principal() {
   const [ outcomes, setOutcomes ] = useState(0)
   const [ total, setTotal ] = useState(0)
 
+  const [ incomesPaid, setIncomesPaid ] = useState(0)
+  const [ outcomesPaid, setOutcomesPaid ] = useState(0)
+  const [ totalPaid, setTotalPaid ] = useState(0)
+
+  const [ incomesNoPaid, setIncomesNoPaid ] = useState(0)
+  const [ outcomesNoPaid, setOutcomesNoPaid ] = useState(0)
+  const [ totalNoPaid, setTotalNoPaid ] = useState(0)
+
   const cardIncomes = useRef<CardFlip>(null)
+  const cardIncomesNoPay = useRef<CardFlip>(null)
   const cardOutcomes = useRef<CardFlip>(null)
+  const cardOutcomesNoPay = useRef<CardFlip>(null)
   const cardTotal = useRef<CardFlip>(null)
+  const cardTotalNoPay = useRef<CardFlip>(null)
   
   useEffect(() => {
     const soma = incomes - outcomes
     setTotal(soma)
 
-  },[incomes, outcomes])
+  },[incomes, outcomes ])
+
+  useEffect(() => {
+    const somaPaid = incomesPaid - outcomesPaid
+    setTotalPaid(somaPaid)
+
+  },[incomesPaid, outcomesPaid ])
+
+  useEffect(() => {
+    const somaNoPaid = incomesNoPaid - outcomesNoPaid
+    setTotalNoPaid(somaNoPaid)
+
+  },[incomesNoPaid, outcomesNoPaid ])
+  
 
   async function loadTransactions(){
     
@@ -58,15 +82,27 @@ export default function Principal() {
     allTransactions.map((item: any) => {
       if(item.type === "up"){
         setIncomes(state => state + Number(item.amount))
+        if(item.paid === true){
+          setIncomesPaid(state => state + Number(item.amount))
+        }
+        
+        if(item.paid === false){
+          setIncomesNoPaid(state => state + Number(item.amount))
+        }
       }
       
       if(item.type === "down"){
         setOutcomes(state => state + Number(item.amount))
+
+        if(item.paid === true){
+          setOutcomesPaid(state => state + Number(item.amount))
+        }
+        
+        if(item.paid === false){
+          setOutcomesNoPaid(state => state + Number(item.amount))
+        }
       }
-      
     })
-
-
   }
 
   useEffect(() => navigation.addListener('blur', () => {
@@ -78,16 +114,38 @@ export default function Principal() {
     }).start();
 }), []);
 
+  function resetValues(){
+    setIncomes(0)
+    setOutcomes(0)
+    setTotal(0)
+
+    setIncomesPaid(0)
+    setOutcomesPaid(0)
+    setTotalPaid(0)
+
+    setIncomesNoPaid(0)
+    setOutcomesNoPaid(0)
+    setTotalNoPaid(0)
+  }
+
   useEffect(() => navigation.addListener('focus', () => {
       // async function removeAll(){
       //   await AsyncStorage.removeItem(collectionKey)
       // }
       // removeAll()
+
+    loadTransactions()
     setIncomes(0)
     setOutcomes(0)
     setTotal(0)
-    loadTransactions()
 
+    setIncomesPaid(0)
+    setOutcomesPaid(0)
+    setTotalPaid(0)
+
+    setIncomesNoPaid(0)
+    setOutcomesNoPaid(0)
+    setTotalNoPaid(0)
     Animated.timing(animate, {
       toValue: 0,
       duration: 300,
@@ -163,31 +221,60 @@ export default function Principal() {
                     </Text>
                   </View>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                  style={styles.card}
-                  activeOpacity={0.8}
-                  onPress={() => {
-                    if(cardIncomes.current){
-                      cardIncomes.current.flip()
-                    }
-                  }}
-                >
-                  <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
-                    <Text style={styles.title}>
-                      Entradas(Pagas)
-                    </Text>
-                    <Feather name="arrow-up-circle" size={24} color="#6AC694" />
-                  </View>
+                <CardFlip ref={cardIncomesNoPay} style={[styles.cardFlipContainer,{ marginVertical: 0}]}>
+                  <TouchableOpacity 
+                    style={styles.card}
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      if(cardIncomesNoPay.current){
+                        cardIncomesNoPay.current.flip()
+                      }
+                    }}
+                  >
+                    <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+                      <Text style={styles.title}>
+                        Entradas(Pagas)
+                      </Text>
+                      <Feather name="arrow-up-circle" size={24} color="#6AC694" />
+                    </View>
 
-                  <View style={{flex:1, justifyContent: 'center' }}>
-                    <Text style={styles.amount}>
-                      { incomes.toLocaleString('pt-BR', {
-                        style: 'currency',
-                        currency: 'BRL'
-                      }) }
-                    </Text>
-                  </View>
-                </TouchableOpacity>
+                    <View style={{flex:1, justifyContent: 'center' }}>
+                      <Text style={styles.amount}>
+                        { incomesPaid.toLocaleString('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL'
+                        }) }
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={styles.card}
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      if(cardIncomes.current){
+                        cardIncomes.current.flip()
+                        cardIncomesNoPay.current.flip()
+                      }
+                    }}
+                  >
+                    <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+                      <Text style={styles.title}>
+                        Entradas(Não Pagas)
+                      </Text>
+                      <Feather name="arrow-up-circle" size={24} color="#6AC694" />
+                    </View>
+
+                    <View style={{flex:1, justifyContent: 'center' }}>
+                      <Text style={styles.amount}>
+                        { incomesNoPaid.toLocaleString('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL'
+                        }) }
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+
+                </CardFlip>
 
               </CardFlip>
 
@@ -220,31 +307,61 @@ export default function Principal() {
                     </Text>
                   </View>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                  style={styles.card}
-                  activeOpacity={0.8}
-                  onPress={() => {
-                    if(cardOutcomes.current){
-                      cardOutcomes.current.flip()
-                    }
-                  }}
-                >
-                  <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
-                    <Text style={styles.title}>
-                      Saídas(Pagas)
-                    </Text>
-                    <Feather name="arrow-down-circle" size={24} color="#E94A65" />
-                  </View>
 
-                  <View style={{flex:1, justifyContent: 'center' }}>
-                    <Text style={styles.amount}>
-                    { outcomes.toLocaleString('pt-BR', {
-                        style: 'currency',
-                        currency: 'BRL'
-                      }) }
-                    </Text>
-                  </View>
-                </TouchableOpacity>
+                <CardFlip ref={cardOutcomesNoPay} style={[styles.cardFlipContainer, {marginVertical: 0}]}>
+                  <TouchableOpacity 
+                    style={styles.card}
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      if(cardOutcomesNoPay.current){
+                        cardOutcomesNoPay.current.flip()
+                      }
+                    }}
+                  >
+                    <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+                      <Text style={styles.title}>
+                        Saídas(Pagas)
+                      </Text>
+                      <Feather name="arrow-down-circle" size={24} color="#E94A65" />
+                    </View>
+
+                    <View style={{flex:1, justifyContent: 'center' }}>
+                      <Text style={styles.amount}>
+                      { outcomesPaid.toLocaleString('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL'
+                        }) }
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={styles.card}
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      if(cardOutcomes.current){
+                        cardOutcomes.current.flip()
+                        cardOutcomesNoPay.current.flip()
+                      }
+                    }}
+                  >
+                    <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+                      <Text style={styles.title}>
+                        Saídas(Não Pagas)
+                      </Text>
+                      <Feather name="arrow-down-circle" size={24} color="#E94A65" />
+                    </View>
+
+                    <View style={{flex:1, justifyContent: 'center' }}>
+                      <Text style={styles.amount}>
+                      { outcomesNoPaid.toLocaleString('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL'
+                        }) }
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+
+                </CardFlip>
 
               </CardFlip>
 
@@ -292,31 +409,61 @@ export default function Principal() {
                   </View>
                 </TouchableOpacity>
 
-                <TouchableOpacity 
-                  style={[styles.card, { backgroundColor: '#49AA26' }]}
-                  activeOpacity={0.8}
-                  onPress={() => {
-                    if(cardTotal.current){
-                      cardTotal.current.flip()
-                    }
-                  }}
-                >
-                  <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
-                    <Text style={[styles.title, { color: '#fff'}]}>
-                      Restante(Pagas)
-                    </Text>
-                    <Feather name="dollar-sign" size={24} color="#fff" />
-                  </View>
+                <CardFlip ref={cardTotalNoPay} style={[styles.cardFlipContainer, {marginVertical: 0}]}>
+                  <TouchableOpacity 
+                    style={[styles.card, { backgroundColor: '#49AA26' }]}
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      if(cardTotalNoPay.current){
+                        cardTotalNoPay.current.flip()
+                      }
+                    }}
+                  >
+                    <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+                      <Text style={[styles.title, { color: '#fff'}]}>
+                        Restante(Pagas)
+                      </Text>
+                      <Feather name="dollar-sign" size={24} color="#fff" />
+                    </View>
 
-                  <View style={{flex:1, justifyContent: 'center' }}>
-                    <Text style={[styles.amount, { color: '#fff' }]}>
-                    { total.toLocaleString('pt-BR', {
-                        style: 'currency',
-                        currency: 'BRL'
-                      }) }
-                    </Text>
-                  </View>
-                </TouchableOpacity>
+                    <View style={{flex:1, justifyContent: 'center' }}>
+                      <Text style={[styles.amount, { color: '#fff' }]}>
+                      { totalPaid.toLocaleString('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL'
+                        }) }
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity 
+                    style={[styles.card, { backgroundColor: '#49AA26' }]}
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      if(cardTotal.current){
+                        cardTotal.current.flip()
+                        cardTotalNoPay.current.flip()
+                      }
+                    }}
+                  >
+                    <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
+                      <Text style={[styles.title, { color: '#fff'}]}>
+                        Restante(Não Pagas)
+                      </Text>
+                      <Feather name="dollar-sign" size={24} color="#fff" />
+                    </View>
+
+                    <View style={{flex:1, justifyContent: 'center' }}>
+                      <Text style={[styles.amount, { color: '#fff' }]}>
+                      { totalNoPaid.toLocaleString('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL'
+                        }) }
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+
+                </CardFlip>
+
               </CardFlip>
               
           </ScrollView>

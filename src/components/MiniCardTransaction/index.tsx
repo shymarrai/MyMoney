@@ -34,10 +34,8 @@ data
                 { data.date && data.date.slice(0,5) }
             </Text>
             {
-                data.pay ?
+                data.paid &&
                     <View style={[styles.select,data.type === 'down' ? {backgroundColor: '#E94A5A' } : {backgroundColor: '#6AC694'}]} />
-                :
-                    <View style={[styles.select,{backgroundColor: '#FFF', borderColor: '#364869'}]} />
             }
         </TouchableOpacity>
     )
