@@ -27,15 +27,17 @@ data
                 </Text>
                 {/* #E94A5A || #6AC694 */}
                 <Text style={[styles.price, data.type === 'down' ? {color: '#E94A5A' } : {color: '#6AC694'}]}>
-                    { data.type === 'down' && '-'} { data.amount && data.amount }
+                    { data.type === 'down' && '-'} { data.amountFormated && data.amountFormated }
                 </Text>
             </View>
             <Text style={styles.date}>
                 { data.date && data.date.slice(0,5) }
             </Text>
             {
-                true &&
-                <View style={[styles.select,data.type === 'down' ? {backgroundColor: '#E94A5A' } : {backgroundColor: '#6AC694'}]} />
+                data.pay ?
+                    <View style={[styles.select,data.type === 'down' ? {backgroundColor: '#E94A5A' } : {backgroundColor: '#6AC694'}]} />
+                :
+                    <View style={[styles.select,{backgroundColor: '#FFF', borderColor: '#364869'}]} />
             }
         </TouchableOpacity>
     )

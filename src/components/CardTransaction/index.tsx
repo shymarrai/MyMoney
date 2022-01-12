@@ -19,13 +19,15 @@ data
                 </Text>
                 
                 {
-                    data.isFixed &&
+                    data.pay ?
                       <View style={[styles.select,data.type === 'down' ? {backgroundColor: '#E94A5A' } : {backgroundColor: '#6AC694'}]} />
+                    :
+                        <View style={[styles.select,{borderColor: '#364869', borderWidth: 1.6}]} />
                 }
             </View>
             {/* #E94A5A || #6AC694 */}
             <Text style={[styles.price, data.type === 'down' ? {color: '#E94A5A' } : {color: '#6AC694'}]}>
-                { data.type === 'down' && '-'} { data.amount && `R$ ${data.amount}` }
+                { data.type === 'down' && '-'} { data.amountFormated && `${data.amountFormated}` }
             </Text>
 
             <View style={styles.containerFooterCard}>

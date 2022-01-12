@@ -30,8 +30,8 @@ import uuid from 'react-native-uuid'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import CurrencyInput from 'react-native-currency-input';
 import { CategorySelect } from '../../components/CategorySelect';
-import CardTransaction from '../../components/CardTransaction';
 import MiniCardTransaction from '../../components/MiniCardTransaction';
+
 
 
 export type Category = {
@@ -44,10 +44,11 @@ export type Category = {
 export interface TransactionProps{
   name: string;
   amount: string;
+  amountFormated: string;
   type: 'up' | 'down';
   category: Category;
   date: string;
-  isFixed: boolean
+  pay: boolean
 }
 
 type NewTransactionScreenProp = StackNavigationProp<RootStackParamList, 'NewTransaction'>;
@@ -61,7 +62,7 @@ export default function NewTransaction() {
   const [ modal, setModal ] = useState(false)
   const [open, setOpen] = useState(false)
   const  [ date ,  setDate ]  =  useState<any>(new Date()) 
-  const [ isFixed, setIsFixed ] = useState(false)
+  const [ pay, setPay ] = useState(false)
   const [ category, setCategory ] = useState({
     key: 'category',
     name: 'Categorias',
@@ -204,10 +205,11 @@ export default function NewTransaction() {
     const NewTransaction = {
       id: String(uuid.v4()),
       name: name,
-      amount: amountFormated,
+      amount: amount,
+      amountFormated: amountFormated,
       // date: date.toString().split().indexOf('-') != -1 ? date : getDateActual(),
       date: getDateActual(date),
-      isFixed: isFixed,
+      isFixed: pay,
       type: type,
       category: category
       
@@ -217,13 +219,13 @@ export default function NewTransaction() {
       const currentData = data ? JSON.parse(data) : []
 
       const dataFormated = [
-        ...currentData,
-        NewTransaction
+        NewTransaction,
+        ...currentData
       ]
 
       await AsyncStorage.setItem(collectionKey, JSON.stringify(dataFormated))
       setType(type)
-      setIsFixed(false)
+      setPay(false)
       setCategory({
         key: 'category',
         name: 'Categorias',
@@ -244,9 +246,6 @@ export default function NewTransaction() {
   }
 
   useEffect(() => {
-
-    loadData()
-
     // async function removeAll(){
     //   await AsyncStorage.removeItem(collectionKey)
     // }
@@ -254,15 +253,8 @@ export default function NewTransaction() {
 
   },[])
 
-  function currencyFormat(num: any) {
-    
-    var valorFormatado = num.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    console.log(valorFormatado)
-
- }
-
   useEffect(() => navigation.addListener('blur', () => {
-
+    loadData()
     Animated.timing(animate, {
         toValue: 1000,
         duration: 300,
@@ -274,6 +266,7 @@ export default function NewTransaction() {
 
 useEffect(() => navigation.addListener('focus', () => {
   setDate(new Date())
+  loadData()
     Animated.timing(animate, {
       toValue: 0,
       duration: 300,
@@ -323,19 +316,19 @@ useEffect(() => navigation.addListener('focus', () => {
                   <TouchableOpacity
                       style={{ flexDirection: 'row', justifyContent: 'flex-end'}}
                       activeOpacity={0.8}
-                      onPress={() => setIsFixed(!isFixed)}
+                      onPress={() => setPay(!pay)}
                     >
 
                       <Text style={[styles.label, {color: colors.color }]}>
-                        Fixa
+                        Paga
                       </Text>
                         <TouchableOpacity
                           activeOpacity={0.8}
                           style={[styles.check, { borderColor: colors.color }]}
-                          onPress={() => setIsFixed(!isFixed)}
+                          onPress={() => setPay(!pay)}
                         >
                           {
-                            isFixed &&
+                            pay &&
                               <View style={{flex: 1, backgroundColor: colors.color, borderRadius: 10}} />
                           }
                         </TouchableOpacity>
@@ -514,7 +507,7 @@ useEffect(() => navigation.addListener('focus', () => {
               allTransactions != undefined  &&
                 <View style={styles.containerCards}>
                   {/* <CardTransaction data={allTransactions[allTransactions.length -1]} /> */}
-                  <MiniCardTransaction  data={allTransactions[allTransactions.length -1]} />
+                  <MiniCardTransaction  data={allTransactions[0]} />
                 </View>
             }
 

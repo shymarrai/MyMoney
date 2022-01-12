@@ -25,13 +25,23 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
       },
       card:{
-        width: '90%',
+        width: 280,
         height: 120,
         backgroundColor: '#fff',
-        marginVertical: 6,
         borderRadius: 10,
         elevation: 2,
         padding: 20,
+        alignSelf: 'center',
+        marginTop: '4%'
+    },
+    cardFlipContainer:{
+        width: 280,
+        marginHorizontal: 10,
+        marginVertical: 6,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 140,
+        borderRadius: 10,
     },
     title:{
       fontFamily: 'Inter_400Regular',

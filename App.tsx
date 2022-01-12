@@ -1,4 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
+import 'react-native-gesture-handler'
+import 'intl'
+import 'intl/locale-data/jsonp/pt-BR'
+
 import React from 'react';
 import AppLoading from 'expo-app-loading';
 import {NavigationContainer} from '@react-navigation/native';
@@ -16,7 +20,6 @@ import {
 } from '@expo-google-fonts/inter';
 
 import Principal from './src/screens/Principal';
-import NewEntrance from './src/screens/NewEntrance';
 import NewTransaction from './src/screens/NewTransaction';
 
 
@@ -39,7 +42,6 @@ export default function App() {
           screenOptions={{headerShown: false}}
         >
           <Stack.Screen component={Principal} name="Principal" />
-          <Stack.Screen component={NewEntrance} name="NewEntrance" />
           <Stack.Screen component={NewTransaction} name="NewTransaction" />
 
         </Stack.Navigator>

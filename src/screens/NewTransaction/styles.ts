@@ -97,7 +97,7 @@ export const styles = StyleSheet.create({
       option:{
         width: 250,
         paddingHorizontal: 10,
-        paddingVertical: 12,
+        paddingVertical: 16,
         marginVertical: 2,
         flexDirection: 'row',
         alignItems: 'center'
