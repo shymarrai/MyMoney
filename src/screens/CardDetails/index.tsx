@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { SafeAreaView, Animated, Text, TouchableOpacity, View, ScrollView, FlatList, ActivityIndicator } from 'react-native';
+import { SafeAreaView, Animated, Text, TouchableOpacity, View, ScrollView, FlatList, ActivityIndicator, TextInput } from 'react-native';
 
 import { styles } from './styles'
 import { LinearGradient } from 'expo-linear-gradient';
@@ -15,6 +15,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../RootStackParamList';
 import { TransactionProps } from '../NewTransaction';
 import TabBarCustom from '../../components/TabBarCustom';
+import { RectButton } from 'react-native-gesture-handler';
 
 type CardDetailsScreenProp = StackNavigationProp<RootStackParamList, 'CardDetails'>;
 
@@ -71,12 +72,26 @@ export default function CardDetails() {
               height: 250,
               paddingHorizontal: 12,
               width: '100%',
-              paddingVertical: 60, 
-              justifyContent: 'flex-start',
+              paddingVertical: 50, 
+              justifyContent: 'space-between',
+              flexDirection: 'row'
+              
           }}
           colors={['#e37c91' , '#E94A65']}
             // colors={['#7CE3B1', '#7CC4B1']}
           >
+            <View style={{alignSelf: 'flex-start'}}>
+              <Text style={{fontFamily: 'Inter_300Light', fontSize: 22, color: '#FFF', marginBottom: 20, marginTop: 12}}>
+                Paga
+              </Text>
+              <Text style={{fontFamily: 'Inter_300Light', fontSize: 42, color: '#FFF'}}>
+                Luz
+              </Text>
+              <Text style={{fontFamily: 'Inter_600SemiBold', fontSize: 48,color: '#FFF'}}>
+                R$ 100,00
+              </Text>
+            </View>
+            
             <View style={{flex: 1, width: '100%'}}>
               <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end'}}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -89,22 +104,60 @@ export default function CardDetails() {
                 </View>
               </View>
             </View>
-            <View style={{alignSelf: 'flex-start', bottom: -25}}>
-              <Text style={{fontFamily: 'Inter_300Light', fontSize: 42, color: '#FFF'}}>
-                Luz
-              </Text>
-              <Text style={{fontFamily: 'Inter_600SemiBold', fontSize: 48,color: '#FFF'}}>
-                R$ 100,00
-              </Text>
-            </View>
-            
-
           
             </LinearGradient>
+
             <TouchableOpacity style={{backgroundColor: '#FEFEFE', elevation: 2,marginHorizontal: 22,alignItems: 'center',justifyContent: 'center', borderRadius: 100, width: 60, height: 60, alignSelf: 'flex-end', top: -30}}>
               <Feather name="arrow-down-circle" size={30} color="#E94A65" />
             </TouchableOpacity>
 
+            <View>
+              <Text>
+                Nome
+              </Text>
+              <TextInput />
+              <Text>
+                Valor
+              </Text>
+              <TextInput />
+
+              <Text>
+                Situação
+              </Text>
+
+              <Text>
+                Categoria
+              </Text>
+              
+              <Text>
+                Data da transação
+              </Text>
+
+              <Text>
+                Tipo de transação
+              </Text>
+
+              <Text>
+                Observação:
+              </Text>
+              <TextInput />
+
+
+
+            </View>
+            <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '80%', alignSelf: 'center'}}>                
+              
+              <RectButton style={{backgroundColor: '#E94A65', padding: 20, width: 150, alignItems: 'center'}}>
+                <Text>
+                  Excluir
+                </Text> 
+              </RectButton>
+              <RectButton style={{backgroundColor: '#7CE3B1', padding: 20, width: 150, alignItems: 'center'}}>
+                <Text>
+                  Salvar
+                </Text>
+              </RectButton>
+            </View>
 
 
 
