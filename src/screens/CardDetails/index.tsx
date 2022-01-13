@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { SafeAreaView, Animated, Text, TouchableOpacity, View, ScrollView, FlatList, ActivityIndicator, TextInput } from 'react-native';
+import { SafeAreaView, Animated, Text, TouchableOpacity, View, ScrollView, Keyboard, ActivityIndicator, TextInput, Platform, KeyboardAvoidingView } from 'react-native';
 
 import { styles } from './styles'
 import { LinearGradient } from 'expo-linear-gradient';
@@ -14,8 +14,9 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../RootStackParamList';
 import { TransactionProps } from '../NewTransaction';
-import TabBarCustom from '../../components/TabBarCustom';
 import { RectButton } from 'react-native-gesture-handler';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { TouchableWithoutFeedback } from 'react-native';
 
 type CardDetailsScreenProp = StackNavigationProp<RootStackParamList, 'CardDetails'>;
 
@@ -24,8 +25,24 @@ const collectionKey = '@mymoney:transactions';
 export default function CardDetails() {
   const navigation = useNavigation<CardDetailsScreenProp>()
   const [ animate, setAnimate ] = useState(new Animated.Value(100))
+  const [ date, setDate] = useState<Date>(new Date())
+  const [ open, setOpen ] = useState(false)
+  const cardSituation = useRef <CardFlip>(null)
 
+  function getDateActual(date: any){
+    const day = date.getDate()
+    const month = date.getMonth()
+    const year = date.getFullYear()
+    const dayformat = day <= 9 ? `0${day}` : day
+    const monthformat = month <= 9 ? `0${month+1}` : month
 
+    return `${dayformat}/${monthformat}/${year}`
+  }
+  const onChangeDate = (event: any, selectedDate: any) => {
+    const currentDate = selectedDate || date;
+    setOpen(Platform.OS === 'ios');
+    setDate(currentDate);
+  };
 
   useEffect(() => navigation.addListener('blur', () => {
       Animated.timing(animate, {
@@ -34,9 +51,6 @@ export default function CardDetails() {
         useNativeDriver: true
     }).start();
   }), []);
-
-
-  
 
   useEffect(() => navigation.addListener('focus', () => {
     Animated.timing(animate, {
@@ -50,7 +64,10 @@ export default function CardDetails() {
 
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={{flex: 1}}>
+      <TouchableWithoutFeedback style={{flex:1}} onPress={Keyboard.dismiss}>
+
+      
       <Animated.View
         style={{
           flex:1,
@@ -60,45 +77,33 @@ export default function CardDetails() {
       }}
       >
         <LinearGradient
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            
-        }}
+          style={{flex: 1}}
           colors={['#FFF', '#E5E5E5']}
         >
           <LinearGradient
-            style={{
-              height: 250,
-              paddingHorizontal: 12,
-              width: '100%',
-              paddingVertical: 50, 
-              justifyContent: 'space-between',
-              flexDirection: 'row'
-              
-          }}
-          colors={['#e37c91' , '#E94A65']}
-            // colors={['#7CE3B1', '#7CC4B1']}
+            style={styles.cardGradient}
+          // colors={['#F45C43' , '#EB3349']}
+            colors={['#4CB8C4', '#3CD3AD']}
           >
             <View style={{alignSelf: 'flex-start'}}>
-              <Text style={{fontFamily: 'Inter_300Light', fontSize: 22, color: '#FFF', marginBottom: 20, marginTop: 12}}>
+              <Text style={styles.situation}>
                 Paga
               </Text>
-              <Text style={{fontFamily: 'Inter_300Light', fontSize: 42, color: '#FFF'}}>
+              <Text style={styles.name}>
                 Luz
               </Text>
-              <Text style={{fontFamily: 'Inter_600SemiBold', fontSize: 48,color: '#FFF'}}>
+              <Text style={styles.price}>
                 R$ 100,00
               </Text>
             </View>
             
-            <View style={{flex: 1, width: '100%'}}>
-              <View style={{width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-end'}}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={{fontFamily: 'Inter_400Regular', fontSize: 18, textAlign: 'right', color: '#FFF'}}>
+            <View style={styles.wrapper}>
+              <View style={styles.containerCategory}>
+                <View style={styles.wrapperCategory}>
+                  <Text style={styles.categoryName}>
                     Casa
                   </Text>
-                  <TouchableOpacity style={{backgroundColor: '#FFF', marginHorizontal: 10,alignItems: 'center', justifyContent: 'center', borderRadius: 100, width: 60, height: 60}}>
+                  <TouchableOpacity style={styles.buttonRound}>
                     <Feather name={"home"} color="#FAE043" size={30}/>
                   </TouchableOpacity>
                 </View>
@@ -107,62 +112,122 @@ export default function CardDetails() {
           
             </LinearGradient>
 
-            <TouchableOpacity style={{backgroundColor: '#FEFEFE', elevation: 2,marginHorizontal: 22,alignItems: 'center',justifyContent: 'center', borderRadius: 100, width: 60, height: 60, alignSelf: 'flex-end', top: -30}}>
-              <Feather name="arrow-down-circle" size={30} color="#E94A65" />
+            <TouchableOpacity style={styles.buttonRoundType}>
+              {/* <Feather name="arrow-down-circle" size={30} color="#EB3349" /> */}
+              <Feather name="arrow-up-circle" size={30} color="#3CD3AD" />
             </TouchableOpacity>
 
-            <View>
-              <Text>
-                Nome
-              </Text>
-              <TextInput />
-              <Text>
-                Valor
-              </Text>
-              <TextInput />
+              <ScrollView style={{flex: 1, top: -30}}>
+                <KeyboardAvoidingView 
+                  style={{flex:1}}
+                  behavior='padding'
+                  
+                >
+                
+                <View style={styles.form}>
 
-              <Text>
-                Situação
-              </Text>
+                  <Text style={styles.textLabel}>
+                    Nome
+                  </Text>
+                  <TextInput style={styles.input} />
+                  <Text style={styles.textLabel}>
+                    Valor
+                  </Text>
+                  <TextInput style={styles.input} />
 
-              <Text>
-                Categoria
-              </Text>
-              
-              <Text>
-                Data da transação
-              </Text>
+                  <View style={[styles.wrapperHorizontal]}>
+                    <View>
+                      <Text style={styles.textLabel}>
+                        Situação
+                      </Text>
 
-              <Text>
-                Tipo de transação
-              </Text>
+                      <CardFlip style={{height: 60, width: 120}} flipDirection='x' ref={cardSituation} >
+                        <TouchableOpacity
+                          style={[styles.buttonSituation, styles.red]}
+                          activeOpacity={0.8}
+                          onPress={() => {
 
-              <Text>
-                Observação:
-              </Text>
-              <TextInput />
+                            cardSituation.current && cardSituation.current.flip()
+                          }}
+                        >
+                          <Text style={[styles.textButton]}>
+                            Não Paga
+                          </Text>
+                          <Feather name="arrow-down-circle" size={24} color={"#FFF"} />
+                        </TouchableOpacity>
+                        
+                        <TouchableOpacity
+                          style={[styles.buttonSituation, styles.green]}
+                          activeOpacity={0.8}
+                          onPress={() => {
+                            cardSituation.current && cardSituation.current.flip()
+                          }}
+                        >
+                          <Text style={[styles.textButton]}>
+                            Paga
+                          </Text>
+                          <Feather name="arrow-up-circle" size={24} color={"#FFF"} />
+                        </TouchableOpacity>
+                      </CardFlip>
+                    </View>
+
+                    <Text style={styles.textLabel}>
+                      Categoria
+                    </Text>
+                  </View>
+
+
+                  
+                  <Text style={styles.textLabel}>
+                    Data da transação
+                  </Text>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => setOpen(!open)} 
+                    style={[styles.input]} 
+                  >
+                    <Text style={styles.textInput}>
+                      { getDateActual(date) }
+                    </Text>
+                  </TouchableOpacity>
+                  {
+                    open && (
+                      <DateTimePicker
+                        value={date}
+                        mode={'date'}
+                        display='default'
+                        onChange={(e: any, date: any) => onChangeDate(e,date)}
+                      />
+                    )}
+
+
+                  <Text style={styles.textLabel}>
+                    Observação:
+                  </Text>
+                  <TextInput style={styles.textArea}/>
+                </View>
+
+                <View style={styles.wrapperButtons}>                
+                  
+                  <RectButton style={styles.buttonSeconday}>
+                    <Text>
+                      Excluir
+                    </Text> 
+                  </RectButton>
+                  <RectButton style={styles.buttonPrimary}>
+                    <Text>
+                      Salvar
+                    </Text>
+                  </RectButton>
+                </View>
+                </KeyboardAvoidingView>
+              </ScrollView>
 
 
 
-            </View>
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', width: '80%', alignSelf: 'center'}}>                
-              
-              <RectButton style={{backgroundColor: '#E94A65', padding: 20, width: 150, alignItems: 'center'}}>
-                <Text>
-                  Excluir
-                </Text> 
-              </RectButton>
-              <RectButton style={{backgroundColor: '#7CE3B1', padding: 20, width: 150, alignItems: 'center'}}>
-                <Text>
-                  Salvar
-                </Text>
-              </RectButton>
-            </View>
-
-
-
-          </LinearGradient>
-        </Animated.View>
+            </LinearGradient>
+          </Animated.View>
+        </TouchableWithoutFeedback>
       </SafeAreaView>
   );
 }

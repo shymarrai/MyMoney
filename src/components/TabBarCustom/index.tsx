@@ -8,8 +8,6 @@ import {useNavigation} from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../screens/RootStackParamList';
 
-import FabButton from '../FABButton'
-
 
 type TabBarBottomProp = StackNavigationProp<RootStackParamList, 'TabBarBottom'>;
 

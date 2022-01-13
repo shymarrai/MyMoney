@@ -12,6 +12,8 @@ export const styles = StyleSheet.create({
     elevation: 15,
     position: 'absolute',
     bottom: 0,
+    borderTopLeftRadius: 40,
+    borderTopRightRadius: 40
 
   },
   tabItem:{
