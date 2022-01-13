@@ -138,13 +138,13 @@ export const styles = StyleSheet.create({
     containerCards:{
       width: '100%',
       alignItems: 'center' ,
+      bottom: 40
     },
     wrapper:{
       flex: 1,
       alignSelf: 'center',
       alignItems: 'center',
       justifyContent: 'center',
-      marginBottom: -50
     },
     error:{
       fontFamily: 'Inter_400Regular',

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { SafeAreaView, Animated, Text, TouchableOpacity, View, ScrollView, FlatList, ActivityIndicator } from 'react-native';
+import { SafeAreaView, Animated, Text, TouchableOpacity, View, ScrollView, FlatList, ActivityIndicator, Alert } from 'react-native';
 
 import { styles } from './styles'
 import { LinearGradient } from 'expo-linear-gradient';
@@ -14,10 +14,11 @@ import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../RootStackParamList';
 import { TransactionProps } from '../NewTransaction';
+import TabBarCustom from '../../components/TabBarCustom';
 
 type PrincipalScreenProp = StackNavigationProp<RootStackParamList, 'Principal'>;
 
-interface DataListProps extends TransactionProps{
+export interface DataListProps extends TransactionProps{
   id: string
 }
 
@@ -27,6 +28,9 @@ export default function Principal() {
   const [ isLoading, setIsLoading] = useState(true)
   const [ animate, setAnimate ] = useState(new Animated.Value(-1000))
   const [data, setData] = useState<DataListProps[]>([])
+
+  const [ first, setFirst ] = useState('')
+  const [ last, setLast ] = useState('')
 
   const [ incomes, setIncomes ] = useState(0)
   const [ outcomes, setOutcomes ] = useState(0)
@@ -46,6 +50,22 @@ export default function Principal() {
   const cardOutcomesNoPay = useRef<CardFlip>(null)
   const cardTotal = useRef<CardFlip>(null)
   const cardTotalNoPay = useRef<CardFlip>(null)
+
+  useEffect(() => {
+    // removeAll()
+    setIncomes(0)
+    setOutcomes(0)
+    setTotal(0)
+
+    setIncomesPaid(0)
+    setOutcomesPaid(0)
+    setTotalPaid(0)
+
+    setIncomesNoPaid(0)
+    setOutcomesNoPaid(0)
+    setTotalNoPaid(0)
+
+  },[])
   
   useEffect(() => {
     const soma = incomes - outcomes
@@ -65,7 +85,6 @@ export default function Principal() {
 
   },[incomesNoPaid, outcomesNoPaid ])
   
-
   async function loadTransactions(){
     
     const response = await AsyncStorage.getItem(collectionKey)
@@ -73,12 +92,57 @@ export default function Principal() {
     const transactions = response ? JSON.parse(response) : []
 
     setData(transactions)
-    await calculateCurrency(transactions)
+
+    if(transactions.length >= 1){
+      await calculateCurrency(transactions)
+      const first = getFirstTransactionDate(transactions)
+      const last = getLastTransactionDate(transactions)
+  
+      setFirst(first)
+      setLast(last)
+    }else{
+      setFirst('')
+      setLast('')
+    }
+
+
   }
 
+  async function removeItem(id: any){
+    
+    try{
+      
+      const transactions = data.filter(item => item.id !== id)
 
+      
+      const dataFormated = [
+        ...transactions
+      ]
+
+      await AsyncStorage.setItem(collectionKey, JSON.stringify(dataFormated))
+    }catch(e){
+      console.log(e)
+      Alert.alert("Não foi possível excluir")
+    }finally{
+      setIncomes(0)
+      setOutcomes(0)
+      setTotal(0)
+  
+      setIncomesPaid(0)
+      setOutcomesPaid(0)
+      setTotalPaid(0)
+  
+      setIncomesNoPaid(0)
+      setOutcomesNoPaid(0)
+      setTotalNoPaid(0)
+
+      loadTransactions()
+    }
+
+  }
 
   async function calculateCurrency(allTransactions:any){
+
     allTransactions.map((item: any) => {
       if(item.type === "up"){
         setIncomes(state => state + Number(item.amount))
@@ -105,47 +169,154 @@ export default function Principal() {
     })
   }
 
+  async function removeAll(){
+    await AsyncStorage.removeItem(collectionKey)
+  }
+
+  function getLastTransactionDate(collection: DataListProps[]){
+    const lastTransctionIn = new Date(
+      Math.max.apply(Math, collection
+        .filter(transaction =>  transaction.type === 'up')
+        .map( transaction => {
+          const stringDate = transaction.date
+
+          const day = stringDate.slice(0,2) 
+          const month = stringDate.slice(3,6)
+          const year = stringDate.slice(5,stringDate.length)
+
+          const formated = month + day + year
+
+          return new Date(formated).getTime()
+        })))
+
+    const lastTransctionOut = new Date(
+      Math.max.apply(Math, collection
+        .filter(transaction =>  transaction.type === 'down')
+        .map( transaction => {
+          const stringDate = transaction.date
+            
+          const day = stringDate.slice(0,2) 
+          const month = stringDate.slice(3,6)
+          const year = stringDate.slice(5,stringDate.length)
+            
+          const formated = month + day + year
+          
+          return new Date(formated).getTime()
+        })))
+
+        const last = lastTransctionIn >= lastTransctionOut ? lastTransctionIn : lastTransctionOut
+        return Intl.DateTimeFormat('pt-BR', {day: '2-digit', month: '2-digit'}).format(last)
+    
+  }
+
+  function getFirstTransactionDate(collection: DataListProps[]){
+    const firstTransctionIn = new Date(
+      Math.min.apply(Math, collection
+        .filter(transaction =>  transaction.type === 'up')
+        .map( transaction => {
+          const stringDate = transaction.date
+
+          const day = stringDate.slice(0,2) 
+          const month = stringDate.slice(3,6)
+          const year = stringDate.slice(5,stringDate.length)
+
+          const formated = month + day + year
+
+          return new Date(formated).getTime()
+        })))
+
+    const firstTransctionOut = new Date(
+      Math.min.apply(Math, collection
+        .filter(transaction =>  transaction.type === 'down')
+        .map( transaction => {
+          const stringDate = transaction.date
+            
+          const day = stringDate.slice(0,2) 
+          const month = stringDate.slice(3,6)
+          const year = stringDate.slice(5,stringDate.length)
+            
+          const formated = month + day + year
+            
+          return new Date(formated).getTime()
+        })))
+
+        const last = firstTransctionIn <= firstTransctionOut ? firstTransctionIn : firstTransctionOut
+        return Intl.DateTimeFormat('pt-BR', {day: '2-digit', month: '2-digit'}).format(last)
+  }
+
+  async function handleCardPaid(id: any){
+    
+    try{
+      const transactionHandled = data.filter(item => item.id === id)
+      transactionHandled[0].paid = !transactionHandled[0].paid
+      
+      
+      const transactions = data.filter(item => item.id !== id)
+
+      const dataFormated = [
+        ...transactionHandled,
+        ...transactions
+      ]
+
+      await AsyncStorage.setItem(collectionKey, JSON.stringify(dataFormated))
+    }catch(e){
+      console.log(e)
+      Alert.alert("Não foi possível alternar situação de pagamento")
+    }finally{
+      setIncomes(0)
+      setOutcomes(0)
+      setTotal(0)
+  
+      setIncomesPaid(0)
+      setOutcomesPaid(0)
+      setTotalPaid(0)
+  
+      setIncomesNoPaid(0)
+      setOutcomesNoPaid(0)
+      setTotalNoPaid(0)
+
+      loadTransactions()
+    }
+
+  }
+
   useEffect(() => navigation.addListener('blur', () => {
+    setIncomes(0)
+    setOutcomes(0)
+    setTotal(0)
+
+    setIncomesPaid(0)
+    setOutcomesPaid(0)
+    setTotalPaid(0)
+
+    setIncomesNoPaid(0)
+    setOutcomesNoPaid(0)
+    setTotalNoPaid(0)
 
     Animated.timing(animate, {
         toValue: -1000,
         duration: 300,
         useNativeDriver: true
     }).start();
-}), []);
-
-  function resetValues(){
-    setIncomes(0)
-    setOutcomes(0)
-    setTotal(0)
-
-    setIncomesPaid(0)
-    setOutcomesPaid(0)
-    setTotalPaid(0)
-
-    setIncomesNoPaid(0)
-    setOutcomesNoPaid(0)
-    setTotalNoPaid(0)
-  }
+  }), []);
 
   useEffect(() => navigation.addListener('focus', () => {
-      // async function removeAll(){
-      //   await AsyncStorage.removeItem(collectionKey)
-      // }
-      // removeAll()
 
-    loadTransactions()
-    setIncomes(0)
-    setOutcomes(0)
-    setTotal(0)
+      loadTransactions()
 
-    setIncomesPaid(0)
-    setOutcomesPaid(0)
-    setTotalPaid(0)
+      setIncomes(0)
+      setOutcomes(0)
+      setTotal(0)
+  
+      setIncomesPaid(0)
+      setOutcomesPaid(0)
+      setTotalPaid(0)
+  
+      setIncomesNoPaid(0)
+      setOutcomesNoPaid(0)
+      setTotalNoPaid(0)
 
-    setIncomesNoPaid(0)
-    setOutcomesNoPaid(0)
-    setTotalNoPaid(0)
+
     Animated.timing(animate, {
       toValue: 0,
       duration: 300,
@@ -170,8 +341,6 @@ export default function Principal() {
           style={{
             flex:1,
             paddingVertical: 60, 
-          alignItems: 'center',
-          justifyContent: 'flex-start',
         }}
           colors={['#FFF', '#E5E5E5']}
         >
@@ -188,10 +357,10 @@ export default function Principal() {
           </View>
 
           <ScrollView
-            style={{ height: 10}}
+            style={{height: 0, top: -20}}
             horizontal
             showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{paddingLeft: '12 %', paddingRight: '12%'}}
+            contentContainerStyle={{paddingLeft: '12%', paddingRight: '12%', alignItems: 'center'}}
           >
 
               {/* ENTRADAS */}
@@ -253,7 +422,7 @@ export default function Principal() {
                     onPress={() => {
                       if(cardIncomes.current){
                         cardIncomes.current.flip()
-                        cardIncomesNoPay.current.flip()
+                        cardIncomesNoPay.current && cardIncomesNoPay.current.flip()
                       }
                     }}
                   >
@@ -340,7 +509,7 @@ export default function Principal() {
                     onPress={() => {
                       if(cardOutcomes.current){
                         cardOutcomes.current.flip()
-                        cardOutcomesNoPay.current.flip()
+                        cardOutcomesNoPay.current && cardOutcomesNoPay.current.flip()
                       }
                     }}
                   >
@@ -364,22 +533,6 @@ export default function Principal() {
                 </CardFlip>
 
               </CardFlip>
-
-              {/* CARTEIRA
-              <View style={styles.card}>
-              <View style={{justifyContent: 'space-between', flexDirection: 'row'}}>
-                <Text style={styles.title}>
-                  Carteira
-                </Text>
-                <FontAwesome5 name="money-bill-alt" size={24} color="#364869" />
-              </View>
-
-              <View style={{flex:1, justifyContent: 'center' }}>
-                <Text style={styles.amount}>
-                  R$ 0,00
-                </Text>
-              </View>
-            </View> */}
 
               {/* RESTANTE */}
               <CardFlip ref={cardTotal} style={[styles.cardFlipContainer]}>
@@ -441,7 +594,7 @@ export default function Principal() {
                     onPress={() => {
                       if(cardTotal.current){
                         cardTotal.current.flip()
-                        cardTotalNoPay.current.flip()
+                        cardTotalNoPay.current && cardTotalNoPay.current.flip()
                       }
                     }}
                   >
@@ -467,34 +620,33 @@ export default function Principal() {
               </CardFlip>
               
           </ScrollView>
-
-
-            <FlatList
-              style={{height: 260, width: '100%'}}
-              data={data}
-              contentContainerStyle={{paddingVertical: 10}}
-              keyExtractor={(item) => item.id}
-              renderItem={({item}) => (
-                <>
-                  <CardTransaction data={item} />
-                </>
-              )}
-            />
-
-
-          <View style={[styles.containerBranch, { top: 20}]}>
-
-            <TouchableOpacity
-              style={[styles.button, { backgroundColor: '#364869' }]}
-              activeOpacity={0.9}
-              onPress={() => navigation.navigate('NewTransaction')}
-            >
-              <Text style={styles.textButton}>
-                Nova Transação
-              </Text>
-              <AntDesign name="pluscircle" size={24} color={"#FFF"} />
-            </TouchableOpacity>
+            
+   
+          <View style={styles.filter}>
+            <Text style={styles.title}>
+              { first && last && `${first} à ${last} `}
+            </Text>
           </View>
+          <FlatList
+            style={{height: 280, width: '100%', marginTop: -24 }}
+            data={data}
+            contentContainerStyle={{paddingTop: 20, paddingBottom: 40}}
+            keyExtractor={(item) => item.id}
+
+            renderItem={({item}) => (
+              <>
+              {
+                item.name &&
+                <CardTransaction
+                  data={item} 
+                  handlePaid={handleCardPaid}
+                  removeItem={removeItem}
+                />
+
+              }
+              </>
+            )}
+          />
           </LinearGradient>
         </Animated.View>
       </SafeAreaView>

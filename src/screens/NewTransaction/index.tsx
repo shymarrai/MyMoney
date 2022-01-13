@@ -324,12 +324,13 @@ useEffect(() => navigation.addListener('focus', () => {
                       </Text>
                         <TouchableOpacity
                           activeOpacity={0.8}
-                          style={[styles.check, { borderColor: colors.color }]}
+                          style={[styles.check, { borderColor: colors.color, backgroundColor: '#f2f2f2' }]}
                           onPress={() => setPay(!pay)}
                         >
                           {
                             pay &&
                               <View style={{flex: 1, backgroundColor: colors.color, borderRadius: 10}} />
+                              
                           }
                         </TouchableOpacity>
                     </TouchableOpacity>
@@ -504,7 +505,7 @@ useEffect(() => navigation.addListener('focus', () => {
             </View>
           </KeyboardAvoidingView>
             {
-              allTransactions != undefined  &&
+              allTransactions != undefined && allTransactions.length >= 1 &&
                 <View style={styles.containerCards}>
                   {/* <CardTransaction data={allTransactions[allTransactions.length -1]} /> */}
                   <MiniCardTransaction  data={allTransactions[0]} />

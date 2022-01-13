@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import 'react-native-gesture-handler'
+
 import 'intl'
 import 'intl/locale-data/jsonp/pt-BR'
 
@@ -21,6 +21,9 @@ import {
 
 import Principal from './src/screens/Principal';
 import NewTransaction from './src/screens/NewTransaction';
+import TabBarCustom from './src/components/TabBarCustom';
+import Dashboard from './src/screens/Dashboard';
+import CardDetails from './src/screens/CardDetails';
 
 
 
@@ -37,15 +40,18 @@ export default function App() {
     return <AppLoading />;
   } else {
     return (
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{headerShown: false}}
-        >
-          <Stack.Screen component={Principal} name="Principal" />
-          <Stack.Screen component={NewTransaction} name="NewTransaction" />
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{headerShown: false}}
+          >
+            <Stack.Screen component={CardDetails} name="CardDetails" />
+            <Stack.Screen component={Principal} name="Principal" />
+            <Stack.Screen component={NewTransaction} name="NewTransaction" />
+            <Stack.Screen component={Dashboard} name="Dashboard" />
 
-        </Stack.Navigator>
-      </NavigationContainer>
+          </Stack.Navigator>
+          <TabBarCustom />
+        </NavigationContainer>
     );
   }
 }

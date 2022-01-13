@@ -68,14 +68,5 @@ export const styles = StyleSheet.create({
       fontSize: 14,
       marginHorizontal: 10
       
-    },
-    filter:{
-      width: '100%',
-      top: -25,
-      height: 40,
-      paddingHorizontal: 40,
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      flexDirection: 'row'
     }
 })
