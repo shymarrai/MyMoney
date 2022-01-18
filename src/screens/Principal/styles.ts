@@ -1,19 +1,20 @@
 import { StyleSheet } from 'react-native';
+import theme from '../../global/styles/theme';
 
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: theme.colors.white,
         
       },
       branch:{
-        fontFamily: 'Inter_600SemiBold',
-        color: '#49AA26',
+        fontFamily: theme.fonts.semiBold,
+        color: theme.colors.primary,
         fontSize: 36
       },
       Mybranch:{
-        fontFamily: 'Inter_400Regular',
-        color: '#364869',
+        fontFamily: theme.fonts.regular,
+        color: theme.colors.default,
         fontSize: 36
       },
       containerBranch:{
@@ -23,36 +24,13 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
 
         justifyContent: 'center',
-      },
-      card:{
-        width: 280,
-        height: 120,
-        backgroundColor: '#fff',
-        borderRadius: 10,
-        elevation: 2,
-        padding: 20,
-        alignSelf: 'center',
-        marginTop: '4%'
-    },
-    cardFlipContainer:{
-        width: 280,
-        marginHorizontal: 10,
-        marginVertical: 6,
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: 140,
-        borderRadius: 10,
-    },
+      },  
     title:{
-      fontFamily: 'Inter_400Regular',
-      color: '#364869',
+      fontFamily: theme.fonts.regular,
+      color: theme.colors.default,
       fontSize: 16
     },
-    amount:{
-      fontFamily: 'Inter_300Light',
-      color: '#364869',
-      fontSize: 36
-    },
+
     button:{
       padding: 12,
       flexDirection:'row',
@@ -63,8 +41,8 @@ export const styles = StyleSheet.create({
       elevation: 2
     },
     textButton:{
-      fontFamily: 'Inter_600SemiBold',
-      color: '#FFF',
+      fontFamily: theme.fonts.semiBold,
+      color: theme.colors.white,
       fontSize: 14,
       marginHorizontal: 10
       

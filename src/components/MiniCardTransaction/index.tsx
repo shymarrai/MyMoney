@@ -1,8 +1,9 @@
 import React from 'react'
 import { styles } from './styles'
 import { Text, View, TouchableOpacity } from 'react-native'
-import { TransactionProps } from '../../screens/NewTransaction'
+import { TransactionProps } from '../../screens/CardDetails'
 import { Feather } from '@expo/vector-icons'
+import theme from '../../global/styles/theme'
 
 interface cardTransaction{
     data: TransactionProps
@@ -18,24 +19,24 @@ data
                     data.category &&
                         <Feather 
                             name={data.category.icon ? data.category.icon : 'info'} 
-                            color={data.category.color ? data.category.color : '#364869'} 
+                            color={data.category.color ? data.category.color : theme.colors.default} 
                             size={20} 
                         />
                 }
                 <Text style={styles.title}>
                     { data.name && data.name }
                 </Text>
-                {/* #E94A5A || #6AC694 */}
-                <Text style={[styles.price, data.type === 'down' ? {color: '#E94A5A' } : {color: '#6AC694'}]}>
+                
+                <Text style={[styles.price, data.type === 'down' ? {color: theme.colors.secondary } : {color: theme.colors.primary}]}>
                     { data.type === 'down' && '-'} { data.amountFormated && data.amountFormated }
                 </Text>
             </View>
             <Text style={styles.date}>
-                { data.date && data.date.slice(0,5) }
+                { data.date && String(data.date).slice(0,5) }
             </Text>
             {
                 data.paid &&
-                    <View style={[styles.select,data.type === 'down' ? {backgroundColor: '#E94A5A' } : {backgroundColor: '#6AC694'}]} />
+                    <View style={[styles.select,data.type === 'down' ? {backgroundColor: theme.colors.secondary} : {backgroundColor: theme.colors.primary}]} />
             }
         </TouchableOpacity>
     )

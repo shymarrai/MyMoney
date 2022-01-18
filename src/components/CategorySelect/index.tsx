@@ -12,7 +12,7 @@ interface Props extends TouchableOpacityProps{
 export function CategorySelect({ title, textColor, backgroundColor, ...rest} : Props){
     return(
         <TouchableOpacity 
-            style={[styles.container, {backgroundColor: backgroundColor, borderColor:textColor }]}
+            style={[styles.container, {backgroundColor: backgroundColor }]}
             activeOpacity={0.7}
             {...rest}
         >

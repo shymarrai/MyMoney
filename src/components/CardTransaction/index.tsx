@@ -3,8 +3,15 @@ import { styles } from './styles'
 import { Text, View, TouchableOpacity, Alert } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import { DataListProps } from '../../screens/Principal'
-import { TransactionProps } from '../../screens/NewTransaction'
 import { Swipeable } from 'react-native-gesture-handler'
+import theme from '../../global/styles/theme'
+
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../screens/RootStackParamList';
+
+type OptionScreenProp = StackNavigationProp<RootStackParamList>;
+
 
 interface cardTransaction {
     data: DataListProps
@@ -18,27 +25,45 @@ export default function CardTransaction({
     removeItem
 }:cardTransaction){
 
-
+const navigation = useNavigation <OptionScreenProp>()
     const RightActions = () => {
         return (
-            <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => removeItem(data.id)}
-                style={{        
-                    width: '20%',
-                    height: '90%',
-                    top: 8,
-                    left: '22%',
-                    backgroundColor: '#E94A65',
-                    borderTopRightRadius: 14,
-                    borderBottomRightRadius: 14,
-                    shadowColor: '#FFF',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}
-            >
-              <Feather name="trash-2" size={24} color="#FFF" />
-          </TouchableOpacity>
+            <View style={{flexDirection: 'column', left: 50 }}>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => removeItem(data.id)}
+                    style={{        
+                        width: 80,
+                        height: '45%',
+                        top: 8,
+                        left: '22%',
+                        backgroundColor:theme.colors.secondary,
+                        borderTopRightRadius: 14,
+                        shadowColor: theme.colors.white,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                >
+                    <Feather name="trash-2" size={24} color={theme.colors.white} />
+                </TouchableOpacity>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => navigation.navigate("CardDetails", {data: data})}
+                    style={{        
+                        width:80,
+                        height: '45%',
+                        top: 8,
+                        left: '22%',
+                        backgroundColor:theme.colors.secondary_soft,
+                        borderBottomRightRadius: 14,
+                        shadowColor: theme.colors.white,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                >
+                    <Feather name="edit" size={24} color={theme.colors.white} />
+                </TouchableOpacity>
+            </View>
         )
        }
 
@@ -61,24 +86,24 @@ export default function CardTransaction({
                     {
                         data.paid ?
                             <TouchableOpacity
-                                style={{padding: 8, borderRadius: 24, backgroundColor: '#F5F5F5'}}
+                                style={{padding: 8, borderRadius: 24, backgroundColor: theme.colors.background}}
                                 onPress={() => handlePaid(data.id)}
                                 activeOpacity={0.7}
                             >
-                                <View style={[styles.select,data.type === 'down' ? {backgroundColor: '#E94A5A' } : {backgroundColor: '#6AC694'}]} />
+                                <View style={[styles.select,data.type === 'down' ? {backgroundColor: theme.colors.secondary } : {backgroundColor: theme.colors.primary}]} />
                             </TouchableOpacity>
                         :                    
                             <TouchableOpacity
-                            style={{padding: 8, borderRadius: 24, backgroundColor: '#F5F5F5'}}
+                            style={{padding: 8, borderRadius: 24, backgroundColor: theme.colors.background}}
                                 onPress={() => handlePaid(data.id)}
                                 activeOpacity={0.7}
                             >
-                                <View style={[styles.select,{backgroundColor: 'rgba(54, 72, 105,0.2)'}]} />
+                                <View style={[styles.select,{backgroundColor: theme.colors.default_light}]} />
                             </TouchableOpacity>
                     }
                 </View>
-                {/* #E94A5A || #6AC694 */}
-                <Text style={[styles.price, data.type === 'down' ? {color: '#E94A5A' } : {color: '#6AC694'}]}>
+                
+                <Text style={[styles.price, data.type === 'down' ? {color: theme.colors.secondary } : {color: theme.colors.primary}]}>
                     { data.type === 'down' && '-'} { data.amountFormated && `${data.amountFormated}` }
                 </Text>
 
@@ -86,7 +111,7 @@ export default function CardTransaction({
                     <View style={styles.containerCategory}>
                         {
                             data.category &&
-                                <Feather name={data.category.icon ? data.category.icon : 'info'} color={data.category.color ? data.category.color : '#364869'} size={20} style={styles.icon}/>
+                                <Feather name={data.category.icon ? data.category.icon : 'info'} color={data.category.color ? data.category.color : theme.colors.default} size={20} style={styles.icon}/>
                         }
                         <Text style={styles.categoryName}>
                             { data.category && data.category.name }

@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import theme from '../../global/styles/theme';
 
 export const styles = StyleSheet.create({
     container: {
@@ -6,16 +7,14 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         borderRadius: 2,
-        height: 40,
+        height: 50,
         paddingHorizontal: 14,
-        marginTop: 6,
-        borderBottomWidth: 1,
     },
     icon:{
         fontSize: 20
     },
     title:{
-        fontFamily: 'Inter_400Regular',
+        fontFamily: theme.fonts.regular,
         fontSize: 14
     }
 })

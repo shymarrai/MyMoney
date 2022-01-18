@@ -30,6 +30,7 @@
     "react-dom": "17.0.1",
     "react-hook-form": "^7.22.5",
     "react-native": "0.64.3",
+    "react-native-android-keyboard-adjust": "^1.2.0",
     "react-native-card-flip": "^1.0.7",
     "react-native-currency-input": "^1.0.1",
     "react-native-date-picker": "^4.1.3",

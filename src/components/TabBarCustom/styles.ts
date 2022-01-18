@@ -1,12 +1,13 @@
 import {Platform, StyleSheet} from 'react-native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { RFValue } from 'react-native-responsive-fontsize';
+import theme from '../../global/styles/theme';
 
 export const styles = StyleSheet.create({
   tabArea:{
     height: Platform.OS === 'ios' ? RFValue(80) : RFValue(60),
     width: '100%',
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
     flexDirection: 'row',
     paddingBottom: getBottomSpace(),
     elevation: 15,
@@ -26,11 +27,11 @@ export const styles = StyleSheet.create({
     height: RFValue(65),
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.white,
     borderRadius: RFValue(50),
     borderWidth: RFValue(8),
     borderStyle: 'solid',
-    borderColor: '#FFF',
+    borderColor: theme.colors.white,
     marginTop:RFValue(-20),
   },
 

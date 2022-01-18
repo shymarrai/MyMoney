@@ -13,7 +13,7 @@ import CardTransaction from '../../components/CardTransaction';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../RootStackParamList';
-import { TransactionProps } from '../NewTransaction';
+import { TransactionProps } from '../CardDetails';
 import TabBarCustom from '../../components/TabBarCustom';
 
 type DashboardScreenProp = StackNavigationProp<RootStackParamList, 'Dashboard'>;

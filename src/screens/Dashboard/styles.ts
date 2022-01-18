@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import theme from '../../global/styles/theme';
 
 export const styles = StyleSheet.create({
     container: {
@@ -7,12 +8,12 @@ export const styles = StyleSheet.create({
         
       },
       branch:{
-        fontFamily: 'Inter_600SemiBold',
+        fontFamily: theme.fonts.semiBold,
         color: '#49AA26',
         fontSize: 36
       },
       Mybranch:{
-        fontFamily: 'Inter_400Regular',
+        fontFamily: theme.fonts.regular,
         color: '#364869',
         fontSize: 36
       },
@@ -44,12 +45,12 @@ export const styles = StyleSheet.create({
         borderRadius: 10,
     },
     title:{
-      fontFamily: 'Inter_400Regular',
+      fontFamily: theme.fonts.regular,
       color: '#364869',
       fontSize: 16
     },
     amount:{
-      fontFamily: 'Inter_300Light',
+      fontFamily: theme.fonts.light,
       color: '#364869',
       fontSize: 36
     },
@@ -63,7 +64,7 @@ export const styles = StyleSheet.create({
       elevation: 2
     },
     textButton:{
-      fontFamily: 'Inter_600SemiBold',
+      fontFamily: theme.fonts.semiBold,
       color: '#FFF',
       fontSize: 14,
       marginHorizontal: 10

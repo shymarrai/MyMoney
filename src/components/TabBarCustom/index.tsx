@@ -1,87 +1,101 @@
 import React, {useEffect, useState} from 'react';
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Keyboard, TouchableOpacity, BackHandler } from 'react-native'
 import { styles } from './styles';
 
 import { Entypo, Feather, Foundation } from '@expo/vector-icons'
-
-import {useNavigation} from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../screens/RootStackParamList';
+import { CommonActions } from '@react-navigation/native';
+import theme from '../../global/styles/theme';
 
 
-type TabBarBottomProp = StackNavigationProp<RootStackParamList, 'TabBarBottom'>;
+export default function TabBarCustom({ state, descriptors, navigation }: any) {
 
-export default function TabBarCustom({item, logo}: any) {
-  const navigation = useNavigation<any>();
+    const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
-  const [ tintColorPrincipal, setTintColorPrincipal ] = useState(false)
-  const [ tintColorDashboard, setTintColorDashboard ] = useState(false)
-  const [ tintColorFabButton, setTintColorFabButton ] = useState(false) /*#6AC694 */
 
-  const handleGoPage = (screenName: any) => {
-    navigation.navigate(screenName)
-    toggleTintColorIcon()
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      
+        setKeyboardVisible(true); // or some other action
+      
+    });
 
-  };
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      
+        setKeyboardVisible(false); // or some other action
+      
+    });
 
-  useEffect(() =>{
-    toggleTintColorIcon()
-  },[])
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
+  
 
-  useEffect(() =>{
-    toggleTintColorIcon()
-  },[tintColorFabButton, tintColorDashboard, tintColorPrincipal])
+  if(isKeyboardVisible == true){
+    return (
+      <>
+      </>
+    )
+  }else{
+    return (
+      <>
+        <View style={styles.tabArea}>
+          <TouchableOpacity style={styles.tabItem} 
+            onPress={() => navigation.dispatch(
+              CommonActions.navigate({
+                name: 'CardDetails',
+                params:{
+                  data: ""
+                }
+              })
+            )}
+          >
+            <Foundation name="list" size={24} color={navigation.getState().index == 1 ? theme.colors.primary : theme.colors.default } />
+          </TouchableOpacity>
+  
+          
+            <TouchableOpacity
+              onPress={() => navigation.dispatch(
+                CommonActions.navigate({
+                  name: 'Principal',
+                })
+              )}
+              activeOpacity={1}
+              style={[
+                styles.tabItemCenter,
+                {
+                  backgroundColor: navigation.getState().index == 0 ? theme.colors.primary : theme.colors.default
+                }
+              ]}
+            >
+              <View style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: 60,
+                height: 60,
+                borderRadius: 40,
+                
+              }}>
+                <Feather name="grid" size={20} color={theme.colors.white} style={{zIndex: 1}}/>
+              </View>
+  
+            </TouchableOpacity>
+          
+  
+          <TouchableOpacity style={styles.tabItem}
+            onPress={() => navigation.dispatch(
+              CommonActions.navigate({
+                name: 'Dashboard',
+              })
+            )}
+          >
+            <Entypo name="bar-graph" size={24} color={navigation.getState().index == 2 ? theme.colors.primary : theme.colors.default } />
+          </TouchableOpacity>
+        </View>
+      </>
+    );
 
-  function toggleTintColorIcon(){
-    if(navigation.getCurrentRoute().name === "NewTransaction"){
-      setTintColorFabButton(true)
-    }else{
-      setTintColorFabButton(false)
-    }
-    
-    if(navigation.getCurrentRoute().name === "Dashboard"){
-      setTintColorDashboard(true)
-    }else{
-      setTintColorDashboard(false)
-    }
-    
-    if(navigation.getCurrentRoute().name === "Principal"){
-      setTintColorPrincipal(true)
-    }else{
-      setTintColorPrincipal(false)
-    }
   }
 
-  return (
-    <>
-      <View style={styles.tabArea}>
-        <TouchableOpacity style={styles.tabItem} onPress={() => handleGoPage('Principal')}>
-          <Foundation name="list" size={24} color={tintColorPrincipal ? "#6AC694" : "#364869"} />
-        </TouchableOpacity>
-
-        
-          <TouchableOpacity
-            onPress={() => handleGoPage('NewTransaction')}
-            activeOpacity={1}
-            style={[styles.tabItemCenter, {backgroundColor:  tintColorFabButton ? "#6AC694" : "#364869"}]}
-          >
-            <View style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: 60,
-              height: 60,
-              borderRadius: 40
-            }}>
-              <Feather name="plus" size={20} color="#FFF" style={{zIndex: 1}}/>
-            </View>
-
-          </TouchableOpacity>
-        
-
-        <TouchableOpacity style={styles.tabItem}  onPress={() => handleGoPage('Dashboard')} >
-          <Entypo name="bar-graph" size={24} color={tintColorDashboard ? "#6AC694" : "#364869"} />
-        </TouchableOpacity>
-      </View>
-    </>
-  );
 }

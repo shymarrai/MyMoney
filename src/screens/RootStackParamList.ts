@@ -4,5 +4,5 @@ export type RootStackParamList = {
     NewTransaction: undefined;
     TabBarBottom: undefined;
     Dashboard: undefined;
-    CardDetails: undefined;
+    CardDetails: object;
 }
