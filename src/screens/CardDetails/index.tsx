@@ -484,6 +484,24 @@ export default function CardDetails({ route}: any) {
                 />
               </View>
 
+            {
+                error.name &&
+                  <Text style={[styles.error, { alignSelf: 'center'}]}>
+                    Necessário um nome 🤭
+                  </Text>
+            }
+            {
+                error.amount &&
+                  <Text style={[styles.error, { alignSelf: 'center'}]}>
+                    Necessário um valor 🤔
+                  </Text>
+            }
+            {
+                error.category &&
+                  <Text style={[styles.error, { alignSelf: 'center'}]}>
+                    Escolha uma categoria ☺️
+                  </Text>
+            }
             <View style={styles.wrapperButtons}>                
               
               <RectButton style={styles.buttonSeconday}

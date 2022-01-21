@@ -34,6 +34,9 @@ export const styles = StyleSheet.create({
     borderColor: theme.colors.white,
     marginTop:RFValue(-20),
   },
-
+  legend:{
+    fontFamily: theme.fonts.regular,
+    fontSize: 12
+  }
 })
 

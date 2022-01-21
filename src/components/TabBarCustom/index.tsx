@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { View, Keyboard, TouchableOpacity, BackHandler } from 'react-native'
+import { View, Keyboard, TouchableOpacity, BackHandler, Text } from 'react-native'
 import { styles } from './styles';
 
 import { Entypo, Feather, Foundation } from '@expo/vector-icons'
@@ -52,6 +52,11 @@ export default function TabBarCustom({ state, descriptors, navigation }: any) {
             )}
           >
             <Foundation name="list" size={24} color={navigation.getState().index == 1 ? theme.colors.primary : theme.colors.default } />
+            <Text style={[styles.legend,{
+              color:navigation.getState().index == 1 ? theme.colors.primary : theme.colors.default 
+            }]}>
+              Cadastro
+            </Text>
           </TouchableOpacity>
   
           
@@ -79,6 +84,13 @@ export default function TabBarCustom({ state, descriptors, navigation }: any) {
               }}>
                 <Feather name="grid" size={20} color={theme.colors.white} style={{zIndex: 1}}/>
               </View>
+              <Text style={[styles.legend,{
+                marginTop: -15,
+                top: 10,
+                color:navigation.getState().index == 0 ? theme.colors.primary : theme.colors.default 
+              }]}>
+                Principal
+              </Text>
   
             </TouchableOpacity>
           
@@ -91,6 +103,11 @@ export default function TabBarCustom({ state, descriptors, navigation }: any) {
             )}
           >
             <Entypo name="bar-graph" size={24} color={navigation.getState().index == 2 ? theme.colors.primary : theme.colors.default } />
+            <Text style={[styles.legend,{
+              color:navigation.getState().index == 2 ? theme.colors.primary : theme.colors.default 
+            }]}>
+              Resumo
+            </Text>
           </TouchableOpacity>
         </View>
       </>

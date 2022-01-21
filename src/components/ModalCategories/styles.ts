@@ -40,7 +40,7 @@ export const styles = StyleSheet.create({
         marginVertical: 2,
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: theme.colors.shape_dark
+        backgroundColor: theme.colors.background
         
       },
 

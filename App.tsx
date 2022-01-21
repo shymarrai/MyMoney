@@ -24,7 +24,13 @@ import Principal from './src/screens/Principal';
 import TabBarCustom from './src/components/TabBarCustom';
 import Dashboard from './src/screens/Dashboard';
 import CardDetails from './src/screens/CardDetails';
-
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded,
+  setTestDeviceIDAsync,
+} from 'expo-ads-admob';
 
 
 export default function App() {
@@ -50,12 +56,21 @@ export default function App() {
               
             }}
             
-          >
+            >
             <Tab.Screen component={Principal} name="Principal" />
             <Tab.Screen component={CardDetails} name="CardDetails" />
             <Tab.Screen component={Dashboard} name="Dashboard" />
 
           </Tab.Navigator>
+          <AdMobBanner
+            bannerSize="fullBanner"
+            adUnitID="ca-app-pub-3940256099942544/6300978111"  //"ca-app-pub-1630449266026590/8873209626"
+            servePersonalizedAds
+            onDidFailToReceiveAdWithError={(err) => console.log(err)}
+            style={{
+              alignSelf: 'center',
+            }}
+          />
           
         </NavigationContainer>
     );

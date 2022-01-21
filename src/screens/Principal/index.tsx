@@ -23,6 +23,7 @@ import { RootStackParamList } from '../RootStackParamList';
 import { TransactionProps } from '../CardDetails';
 import { CardAmountFlip } from '../../components/CardAmountFlip';
 import theme from '../../global/styles/theme';
+import Load from '../../components/Load';
 
 type PrincipalScreenProp = StackNavigationProp<RootStackParamList, 'Principal'>;
 
@@ -54,31 +55,35 @@ export default function Principal() {
 
   useEffect(() => {
     // removeAll()
+    setIsLoading(true)
     resetStates()
+    setIsLoading(false)
   },[])
   
   useEffect(() => {
+    setIsLoading(true)
     const soma = incomes - outcomes
     setTotal(soma)
-
+    setIsLoading(false)
   },[incomes, outcomes ])
 
   useEffect(() => {
+    setIsLoading(true)
     const somaPaid = incomesPaid - outcomesPaid
     setTotalPaid(somaPaid)
-
+    setIsLoading(false)
   },[incomesPaid, outcomesPaid ])
 
   useEffect(() => {
+    setIsLoading(true)
     const somaNoPaid = incomesNoPaid - outcomesNoPaid
     setTotalNoPaid(somaNoPaid)
-
+    setIsLoading(false)
   },[incomesNoPaid, outcomesNoPaid ])
   
   async function loadTransactions(){
-    
+    setIsLoading(true)
     const response = await AsyncStorage.getItem(collectionKey)
-
     const transactions = response ? JSON.parse(response) : []
 
     setData(transactions)
@@ -94,10 +99,11 @@ export default function Principal() {
       setLast('')
     }
 
-
+    setIsLoading(false)
   }
 
   function resetStates(){
+    setIsLoading(true)
     setIncomes(0)
     setOutcomes(0)
     setTotal(0)
@@ -109,9 +115,11 @@ export default function Principal() {
     setIncomesNoPaid(0)
     setOutcomesNoPaid(0)
     setTotalNoPaid(0)
+    setIsLoading(false)
   }
 
   async function removeItem(id: any){
+    setIsLoading(true)
     
     try{
       
@@ -131,11 +139,11 @@ export default function Principal() {
       resetStates()
       loadTransactions()
     }
-
+    setIsLoading(false)
   }
 
   async function calculateCurrency(allTransactions:any){
-
+    setIsLoading(true)
     allTransactions.map((item: any) => {
       if(item.type === "up"){
         setIncomes(state => state + Number(item.amount))
@@ -160,6 +168,8 @@ export default function Principal() {
         }
       }
     })
+
+    setIsLoading(false)
   }
 
   async function removeAll(){
@@ -167,6 +177,8 @@ export default function Principal() {
   }
 
   function getLastTransactionDate(collection: DataListProps[]){
+    setIsLoading(true)
+
     const lastTransctionIn = new Date(
       Math.max.apply(Math, collection
         .filter(transaction =>  transaction.type === 'up')
@@ -197,12 +209,16 @@ export default function Principal() {
           return new Date(formated).getTime()
         })))
 
+        setIsLoading(false)
         const last = lastTransctionIn >= lastTransctionOut ? lastTransctionIn : lastTransctionOut
         return Intl.DateTimeFormat('pt-BR', {day: '2-digit', month: '2-digit'}).format(last)
-    
+
+
   }
 
   function getFirstTransactionDate(collection: DataListProps[]){
+    setIsLoading(true)
+
     const firstTransctionIn = new Date(
       Math.min.apply(Math, collection
         .filter(transaction =>  transaction.type === 'up')
@@ -234,10 +250,12 @@ export default function Principal() {
         })))
 
         const last = firstTransctionIn <= firstTransctionOut ? firstTransctionIn : firstTransctionOut
+        setIsLoading(false)
         return Intl.DateTimeFormat('pt-BR', {day: '2-digit', month: '2-digit'}).format(last)
   }
 
   async function handleCardPaid(id: any){
+    setIsLoading(true)
     
     try{
       const transactionHandled = data.filter(item => item.id === id)
@@ -260,7 +278,7 @@ export default function Principal() {
 
       loadTransactions()
     }
-
+    setIsLoading(false)
   }
 
   useEffect(() => navigation.addListener('blur', () => {
@@ -315,6 +333,7 @@ export default function Principal() {
 
           </View>
 
+            
           <ScrollView
             style={{height: 0, top: -20}}
             horizontal
@@ -328,6 +347,7 @@ export default function Principal() {
               NoPaid={incomesNoPaid}
               Paid={incomesPaid}
               title="Entradas"
+              isLoading={isLoading}
             />
               {/* SAÍDAS */}             
               <CardAmountFlip  
@@ -335,6 +355,7 @@ export default function Principal() {
               NoPaid={outcomesNoPaid}
               Paid={outcomesPaid} 
               title="Saídas"
+              isLoading={isLoading}
             />
               {/* RESTANTES */}
               <CardAmountFlip  
@@ -342,6 +363,7 @@ export default function Principal() {
               NoPaid={totalNoPaid}
               Paid={totalPaid}
               title="Restantes"
+              isLoading={isLoading}
             />
 
               
@@ -362,13 +384,16 @@ export default function Principal() {
             renderItem={({item}) => (
               <>
               {
-                item.name &&
-                <CardTransaction
-                  data={item} 
-                  handlePaid={handleCardPaid}
-                  removeItem={removeItem}
-                />
-
+                isLoading ?
+                  <Load />
+                  
+                  :
+                  item.name &&
+                    <CardTransaction
+                      data={item} 
+                      handlePaid={handleCardPaid}
+                      removeItem={removeItem}
+                    />                  
               }
               </>
             )}

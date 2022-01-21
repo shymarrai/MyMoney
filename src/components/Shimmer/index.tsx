@@ -12,8 +12,9 @@ borderRadius: 56,
 },
 })
 const SCREEN_WIDTH = Dimensions.get('screen').width
+const SCREEN_HEIGHT = Dimensions.get('window').height
 
-export function Shimmer({ width=400, height=580 }) {
+export function Shimmer({ width=SCREEN_WIDTH, height=SCREEN_HEIGHT }) {
     const START = -1
     const END = 1
     const DURATION = 2000
@@ -25,7 +26,7 @@ export function Shimmer({ width=400, height=580 }) {
         const runAnimation = () => {
         ANIMATION.setValue(START)
         Animated.timing(ANIMATION, {
-        delay: 5000,
+        delay: 100,
         toValue: END,
         duration: DURATION,
         easing: Easing.linear,

@@ -4,15 +4,17 @@ import { TouchableOpacity, TouchableOpacityProps, View, Text } from 'react-nativ
 import { styles } from './styles'
 import CardFlip from 'react-native-card-flip';
 import theme from '../../global/styles/theme';
+import Load from '../Load';
 
 interface Props extends TouchableOpacityProps{
   amount: number
   NoPaid: number
   Paid: number
   title: "Entradas" | "Saídas" | "Restantes"
+  isLoading?: boolean
 }
 
-export function CardAmountFlip({  amount, NoPaid, Paid, title, ...rest} : Props){
+export function CardAmountFlip({  amount, NoPaid, Paid, title, isLoading ,...rest} : Props){
   const cardPrimary = useRef <CardFlip>(null)
   const cardSecondary = useRef <CardFlip>(null)
     return(
@@ -45,12 +47,23 @@ export function CardAmountFlip({  amount, NoPaid, Paid, title, ...rest} : Props)
             </View>
 
             <View style={{flex:1, justifyContent: 'center' }}>
-              <Text style={[styles.amount,  title === "Restantes" && { color: theme.colors.white}]}>
-                { amount.toLocaleString('pt-BR', {
-                  style: 'currency',
-                  currency: 'BRL'
-                }) }
-              </Text>
+
+              {
+                isLoading ?
+                  <Load />
+
+                :
+
+                  <Text style={[styles.amount,  title === "Restantes" && { color: theme.colors.white}]}>
+
+                    { amount.toLocaleString('pt-BR', {
+                      style: 'currency',
+                      currency: 'BRL'
+                      }) 
+                    }
+
+                  </Text>
+              }
             </View>
           </TouchableOpacity>
           <CardFlip ref={cardSecondary} style={[styles.cardFlipContainer,{ marginVertical: 0}]}>
@@ -82,12 +95,23 @@ export function CardAmountFlip({  amount, NoPaid, Paid, title, ...rest} : Props)
               </View>
 
               <View style={{flex:1, justifyContent: 'center' }}>
-                <Text style={[styles.amount,  title === "Restantes" && { color: theme.colors.white}]}>
-                  { Paid.toLocaleString('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
-                  }) }
-                </Text>
+
+                {
+                  isLoading ?
+                    <Load />
+
+                  :
+                    <Text style={[styles.amount,  title === "Restantes" && { color: theme.colors.white}]}>
+
+                      { Paid.toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                        }) 
+                      }
+
+                    </Text>
+                }
+
               </View>
             </TouchableOpacity>
             <TouchableOpacity 
@@ -119,12 +143,25 @@ export function CardAmountFlip({  amount, NoPaid, Paid, title, ...rest} : Props)
             </View>
 
             <View style={{flex:1, justifyContent: 'center' }}>
-              <Text style={[styles.amount,  title === "Restantes" && { color: theme.colors.white}]}>
-                { NoPaid.toLocaleString('pt-BR', {
-                  style: 'currency',
-                  currency: 'BRL'
-                }) }
-              </Text>
+
+              {
+                  isLoading ?
+                  <Load />
+
+                  :
+
+                    <Text style={[styles.amount,  title === "Restantes" && { color: theme.colors.white}]}>
+
+                      { NoPaid.toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                        }) 
+                      }
+
+                    </Text>
+                }
+
+
             </View>
           </TouchableOpacity>
 
