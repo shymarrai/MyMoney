@@ -47,12 +47,23 @@ export const styles = StyleSheet.create({
       
     },
     filter:{
-      width: '100%',
-      top: -25,
-      height: 40,
+      width: '90%',
       paddingHorizontal: 40,
       alignItems: 'center',
       justifyContent: 'flex-end',
       flexDirection: 'row'
+    },
+    controls:{
+      width: '30%',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginLeft: 10
+      
+    },
+    month:{
+      fontFamily: theme.fonts.semiBold,
+      color: theme.colors.default,
+      fontSize: 14
     }
 })

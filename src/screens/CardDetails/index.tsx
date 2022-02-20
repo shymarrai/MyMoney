@@ -8,7 +8,8 @@ import {
   TextInput, 
   Platform, 
   KeyboardAvoidingView,
-  Alert
+  Alert,
+  Keyboard
 } from 'react-native';
 
 import { styles } from './styles'
@@ -19,7 +20,7 @@ import uuid from 'react-native-uuid'
 import { useNavigation} from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../RootStackParamList';
-import { RectButton } from 'react-native-gesture-handler';
+import { RectButton, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { ModalCategories } from '../../components/ModalCategories';
 import { CardFlipSituation } from '../../components/CardFlipSituation';
@@ -179,9 +180,8 @@ export default function CardDetails({ route}: any) {
     const day = date.getDate()
     const month = date.getMonth()
     const year = date.getFullYear()
-    const dayformat = day <= 9 ? `0${day}` : day
-    const monthformat = month <= 9 ? `0${month+1}` : month
-
+    const dayformat = day < 9 ? `0${day}` : day
+    const monthformat = month < 9 ? `0${month+1}` : month+1
     return `${dayformat}/${monthformat}/${year}`
   }
 
@@ -313,7 +313,8 @@ export default function CardDetails({ route}: any) {
   }
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <>
+    <View style={{flex: 1}}>
       <Animated.View
         style={{
           flex:1,
@@ -548,7 +549,9 @@ export default function CardDetails({ route}: any) {
 
             </LinearGradient>
           </Animated.View>
-      </SafeAreaView>
+      </View>
+    </>
+
   );
 }
 

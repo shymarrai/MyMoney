@@ -70,6 +70,7 @@ export default function Dashboard() {
       new Date(formatDate(expensive.date)).getFullYear() === selectedDate.getFullYear()
       ))
 
+      
     const expensivesTotal = expensives.reduce((acumullator: number, expensive: DataListProps) => {
       return acumullator + Number(expensive.amount)
     }, 0)
@@ -140,6 +141,13 @@ export default function Dashboard() {
 
 
   return (
+    <ScrollView
+      nestedScrollEnabled={true}
+      style={{flex: 1}}
+      contentContainerStyle={{flexGrow: 1}}
+    >
+
+    
     <View style={styles.container}>
       <Animated.View
         style={{
@@ -200,6 +208,7 @@ export default function Dashboard() {
           </View>
 
           <ScrollView
+            nestedScrollEnabled={true}
             style={styles.scroll}
             contentContainerStyle={{padding: 20, paddingBottom: 50}}
             >
@@ -219,6 +228,8 @@ export default function Dashboard() {
           </LinearGradient>
         </Animated.View>
       </View>
+    </ScrollView>
+
   );
 }
 

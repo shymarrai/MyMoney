@@ -59,7 +59,7 @@ export default function TabBarCustom({ state, descriptors, navigation }: any) {
             </Text>
           </TouchableOpacity>
   
-          
+          <View>
             <TouchableOpacity
               onPress={() => navigation.dispatch(
                 CommonActions.navigate({
@@ -84,15 +84,18 @@ export default function TabBarCustom({ state, descriptors, navigation }: any) {
               }}>
                 <Feather name="grid" size={20} color={theme.colors.white} style={{zIndex: 1}}/>
               </View>
-              <Text style={[styles.legend,{
-                marginTop: -15,
-                top: 10,
-                color:navigation.getState().index == 0 ? theme.colors.primary : theme.colors.default 
-              }]}>
+            </TouchableOpacity>
+              <Text 
+                style={[styles.legend,{
+                  top: -10,
+                  alignSelf: 'center',
+                  color:navigation.getState().index == 0 ? theme.colors.primary : theme.colors.default 
+                }]}
+              >
                 Principal
               </Text>
-  
-            </TouchableOpacity>
+          </View>
+
           
   
           <TouchableOpacity style={styles.tabItem}

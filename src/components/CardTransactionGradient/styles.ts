@@ -26,10 +26,12 @@ export const styles = StyleSheet.create({
         marginTop: 12
       },
       name:{
+        width: SCREEN_WIDTH,
+        overflow: 'hidden',
         fontFamily: theme.fonts.light, 
         fontSize: 42, 
         color: theme.colors.white,
-        height: 50
+        height: 60
       },
       price:{
         fontFamily: theme.fonts.semiBold, 

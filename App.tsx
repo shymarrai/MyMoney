@@ -3,11 +3,12 @@ import { StatusBar } from 'expo-status-bar';
 import 'intl'
 import 'intl/locale-data/jsonp/pt-BR'
 
-import React from 'react';
+import React, { useState } from 'react';
 
 import AppLoading from 'expo-app-loading';
 import {NavigationContainer} from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,6 +25,9 @@ import Principal from './src/screens/Principal';
 import TabBarCustom from './src/components/TabBarCustom';
 import Dashboard from './src/screens/Dashboard';
 import CardDetails from './src/screens/CardDetails';
+import IntroMyMoney from './src/screens/IntroStack/IntroMyMoney';
+import IntroPrincipal from './src/screens/IntroStack/IntroPrincipal';
+
 import {
   AdMobBanner,
   AdMobInterstitial,
@@ -31,10 +35,14 @@ import {
   AdMobRewarded,
   setTestDeviceIDAsync,
 } from 'expo-ads-admob';
+import IntroDelete from './src/screens/IntroStack/IntroDelete';
+
 
 
 export default function App() {
-  
+  const [intro, setIntro] = useState(false)
+
+
   let [fontsLoaded] = useFonts({
     Inter_900Black,
     Inter_300Light,
@@ -48,8 +56,33 @@ export default function App() {
   } else {
     return (
         <NavigationContainer>
+          {
+            !intro &&
+              <>
+                <AdMobBanner
+                  bannerSize="fullBanner"
+                  adUnitID="ca-app-pub-1630449266026590/8873209626"  // teste ca-app-pub-3940256099942544/6300978111
+                  servePersonalizedAds
+                  onDidFailToReceiveAdWithError={(err) => console.log(err)}
+                  style={{
+                    alignSelf: 'center',
+                    top: 40,
+                    height: 100,
+                  }}
+                />
+              </>
+          }
           <Tab.Navigator
-            tabBar={ props => <TabBarCustom {...props} />}
+            tabBar={ props => {
+              if(props.navigation.getState().index < 3){
+                setIntro(false)
+                return (
+                  <TabBarCustom {...props} />
+                )
+              }else{
+                setIntro(true)
+              }
+          }}
             screenOptions={{
               headerShown: false,
               tabBarHideOnKeyboard:true,
@@ -60,20 +93,15 @@ export default function App() {
             <Tab.Screen component={Principal} name="Principal" />
             <Tab.Screen component={CardDetails} name="CardDetails" />
             <Tab.Screen component={Dashboard} name="Dashboard" />
+            <Tab.Screen component={IntroMyMoney} name="IntroMyMoney" />
+            <Tab.Screen component={IntroPrincipal} name="IntroPrincipal" />
+            <Tab.Screen component={IntroDelete} name="IntroDelete" />
 
           </Tab.Navigator>
-          <AdMobBanner
-            bannerSize="fullBanner"
-            adUnitID="ca-app-pub-3940256099942544/6300978111"  //"ca-app-pub-1630449266026590/8873209626"
-            servePersonalizedAds
-            onDidFailToReceiveAdWithError={(err) => console.log(err)}
-            style={{
-              alignSelf: 'center',
-            }}
-          />
           
         </NavigationContainer>
     );
   }
-}
 
+
+}

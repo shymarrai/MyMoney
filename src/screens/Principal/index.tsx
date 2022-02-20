@@ -7,16 +7,17 @@ import {
   ScrollView, 
   FlatList, 
   ActivityIndicator, 
-  Alert
+  Alert,
+  TouchableOpacity
 } from 'react-native';
 
 import { styles } from './styles'
 import { LinearGradient } from 'expo-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { Feather, Entypo } from '@expo/vector-icons';
 import CardTransaction from '../../components/CardTransaction';
-
-
+import { addMonths, subMonths } from 'date-fns';
+import { BorderlessButton } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../RootStackParamList';
@@ -24,6 +25,9 @@ import { TransactionProps } from '../CardDetails';
 import { CardAmountFlip } from '../../components/CardAmountFlip';
 import theme from '../../global/styles/theme';
 import Load from '../../components/Load';
+
+import { format } from 'date-fns/esm';
+import { ptBR } from 'date-fns/locale';
 
 type PrincipalScreenProp = StackNavigationProp<RootStackParamList, 'Principal'>;
 
@@ -53,6 +57,29 @@ export default function Principal() {
   const [ outcomesNoPaid, setOutcomesNoPaid ] = useState(0)
   const [ totalNoPaid, setTotalNoPaid ] = useState(0)
 
+  const [ selectedDate, setSelectedDate ] = useState(new Date())
+
+
+  function handleDateChange(action: 'next' | 'prev'){
+    setIsLoading(true)
+    if(action === 'next'){
+      setSelectedDate(addMonths(selectedDate, 1))
+    }else{
+      setSelectedDate(subMonths(selectedDate, 1))
+    }
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    resetStates()
+    loadTransactions()
+  },[selectedDate])
+  
+  useEffect(() => {
+    resetStates()
+    loadTransactions()
+  },[])
+
   useEffect(() => {
     // removeAll()
     setIsLoading(true)
@@ -80,17 +107,33 @@ export default function Principal() {
     setTotalNoPaid(somaNoPaid)
     setIsLoading(false)
   },[incomesNoPaid, outcomesNoPaid ])
+
+  function formatDate(date: string){
+    const stringDate = date
+
+    const day = stringDate.slice(0,2) 
+    const month = stringDate.slice(3,6)
+    const year = stringDate.slice(5,stringDate.length)
+
+    return month + day + year
+  }
   
   async function loadTransactions(){
     setIsLoading(true)
     const response = await AsyncStorage.getItem(collectionKey)
     const transactions = response ? JSON.parse(response) : []
 
-    setData(transactions)
-    if(transactions.length >= 1){
-      await calculateCurrency(transactions)
-      const first = getFirstTransactionDate(transactions)
-      const last = getLastTransactionDate(transactions)
+    const transactionsFiltered = transactions.filter((transaction: DataListProps) =>( 
+      new Date(formatDate(transaction.date)).getMonth() === selectedDate.getMonth() &&
+      new Date(formatDate(transaction.date)).getFullYear() === selectedDate.getFullYear()
+    ))
+
+      
+    setData(transactionsFiltered)
+    if(transactionsFiltered.length >= 1){
+      await calculateCurrency(transactionsFiltered)
+      const first = getFirstTransactionDate(transactionsFiltered)
+      const last = getLastTransactionDate(transactionsFiltered)
   
       setFirst(first)
       setLast(last)
@@ -122,8 +165,11 @@ export default function Principal() {
     setIsLoading(true)
     
     try{
+      const response = await AsyncStorage.getItem(collectionKey)
+      const transactionsData = response ? JSON.parse(response) : []
+  
       
-      const transactions = data.filter(item => item.id !== id)
+      const transactions = transactionsData.filter((item: DataListProps)  => item.id !== id)
 
       
       const dataFormated = [
@@ -258,11 +304,15 @@ export default function Principal() {
     setIsLoading(true)
     
     try{
-      const transactionHandled = data.filter(item => item.id === id)
+
+      const response = await AsyncStorage.getItem(collectionKey)
+      const transactionsData = response ? JSON.parse(response) : []
+
+      const transactionHandled = transactionsData.filter((item: DataListProps) => item.id === id)
       transactionHandled[0].paid = !transactionHandled[0].paid
       
       
-      const transactions = data.filter(item => item.id !== id)
+      const transactions = transactionsData.filter((item: DataListProps) => item.id !== id)
 
       const dataFormated = [
         ...transactionHandled,
@@ -283,7 +333,7 @@ export default function Principal() {
 
   useEffect(() => navigation.addListener('blur', () => {
     resetStates()
-
+    
     Animated.timing(animate, {
         toValue: -1000,
         duration: 300,
@@ -292,8 +342,9 @@ export default function Principal() {
   }), []);
 
   useEffect(() => navigation.addListener('focus', () => {
-      loadTransactions()
-      resetStates()
+    resetStates()
+    loadTransactions()
+    setSelectedDate(selectedDate)
     Animated.timing(animate, {
       toValue: 0,
       duration: 300,
@@ -305,7 +356,7 @@ export default function Principal() {
 
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Animated.View
         style={{
           flex:1,
@@ -317,25 +368,33 @@ export default function Principal() {
         <LinearGradient
           style={{
             flex:1,
-            paddingVertical: 60, 
+            paddingVertical: 20, 
         }}
           colors={[theme.colors.white, theme.colors.shape]}
         >
           <View style={[styles.containerBranch, 
-            { marginBottom: 30,}]}
+            { marginBottom: 30}]}
           >
             <Text style={styles.Mybranch}>
               My
             </Text>
             <Text style={styles.branch}>
               Money
+              
             </Text>
+            <TouchableOpacity
+              activeOpacity={0.9}
+              onPress={() =>  navigation.navigate('IntroMyMoney')}
+              style={{padding: 10, right: -80}}
+            >
+              <Entypo name="info-with-circle" size={24} color={theme.colors.default} />
+            </TouchableOpacity>
 
           </View>
 
             
           <ScrollView
-            style={{height: 0, top: -20}}
+            style={{top: -50}}
             horizontal
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{paddingLeft: '12%', paddingRight: '12%', alignItems: 'center'}}
@@ -369,38 +428,80 @@ export default function Principal() {
               
           </ScrollView>
             
-   
-          <View style={styles.filter}>
-            <Text style={styles.title}>
-              { first && last && `${first} à ${last} `}
-            </Text>
-          </View>
-          <FlatList
-            style={{height: 280, width: '100%', marginTop: -24 }}
-            data={data}
-            contentContainerStyle={{paddingTop: 20, paddingBottom: 40}}
-            keyExtractor={(item) => item.id}
+          <View
+            style={{
+              width: '90%',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              top: -80,
+              paddingHorizontal: 20
+            }}
+          >
+            <View
+            style={styles.controls}
+          >
+            <BorderlessButton
+              onPress={() => handleDateChange('prev')}
+            >
+              <Feather name={'chevron-left'} size={24} color={theme.colors.default} />
+            </BorderlessButton>
 
-            renderItem={({item}) => (
-              <>
-              {
-                isLoading ?
-                  <Load />
-                  
-                  :
+            <Text style={styles.month}>
+              { format(selectedDate, 'MMM/yyyy',{ locale: ptBR})  }
+            </Text>
+
+            <BorderlessButton
+              onPress={() => handleDateChange('next')}
+            >
+            <Feather name={'chevron-right'} size={24} color={theme.colors.default} />
+            </BorderlessButton>
+
+          </View>
+
+
+            <View style={styles.filter}>
+              <Text style={styles.title}>
+                { first && last && `${first} à ${last} `}
+              </Text>
+            </View>
+          </View>
+
+
+          {
+            isLoading ?
+
+              <View
+                style={{height: 365, width: '100%', top: -70}}
+              >
+                <Load />
+              </View>
+
+            :
+            <FlatList
+              style={{height: 300, width: '100%', top: -70}}
+              data={data}
+              contentContainerStyle={{paddingTop: 20, paddingBottom: 40}}
+              keyExtractor={(item) => item.id}
+
+              renderItem={({item}) => (
+                <>
+                {
+
                   item.name &&
                     <CardTransaction
                       data={item} 
                       handlePaid={handleCardPaid}
                       removeItem={removeItem}
                     />                  
-              }
-              </>
-            )}
-          />
+                }
+                </>
+              )}
+            />
+          }
           </LinearGradient>
         </Animated.View>
-      </SafeAreaView>
+      </View>
   );
 }
 

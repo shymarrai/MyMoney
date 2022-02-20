@@ -51,19 +51,19 @@ export function CardTransactionGradient({ name,date, paid, type, amountFormated,
               // colors={["red", 'green']}
             />
           </Animated.View>
-          <View style={{alignSelf: 'flex-start', width: '50%'}}>
+          <View style={{alignSelf: 'flex-start', width: '50%', top: -30}}>
             <Text style={styles.situation}>
               { paid ? "Paga" : "Não Paga"}
             </Text>
             <Text style={styles.name}>
               { name && name }
             </Text>
-            <Text style={styles.price}>
+            <Text style={[styles.price,{ top: 30 }]}>
               { amountFormated && amountFormated  }
             </Text>
           </View>
         
-          <View style={styles.wrapper}>
+          <View style={[styles.wrapper]}>
             <View style={styles.containerCategory}>
               <View style={styles.wrapperCategory}>
                 {/* <Text style={styles.categoryName}>
@@ -79,7 +79,7 @@ export function CardTransactionGradient({ name,date, paid, type, amountFormated,
               </View>
             </View>
           </View>
-          <Text style={styles.date}>
+          <Text style={[styles.date, { top: -20 }]}>
             { date && date}
           </Text>
 

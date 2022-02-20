@@ -4,7 +4,8 @@ import theme from '../../global/styles/theme';
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.white,    
+    backgroundColor: theme.colors.white,  
+    top: -25  
   },
   scroll:{
     width: '100%',

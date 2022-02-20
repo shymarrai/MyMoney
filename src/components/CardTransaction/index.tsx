@@ -17,12 +17,14 @@ interface cardTransaction {
     data: DataListProps
     handlePaid: (id: any) => void
     removeItem: (id: any) => void
+    test?: boolean
 }
 
 export default function CardTransaction({
     data,
     handlePaid,
-    removeItem
+    removeItem,
+    test
 }:cardTransaction){
 
 const navigation = useNavigation <OptionScreenProp>()
@@ -48,7 +50,7 @@ const navigation = useNavigation <OptionScreenProp>()
                 </TouchableOpacity>
                 <TouchableOpacity
                     activeOpacity={0.8}
-                    onPress={() => navigation.navigate("CardDetails", {data: data})}
+                    onPress={() => test !== true && navigation.navigate("CardDetails", {data: data})}
                     style={{        
                         width:80,
                         height: '45%',
@@ -83,24 +85,29 @@ const navigation = useNavigation <OptionScreenProp>()
                         { data.name && data.name }
                     </Text>
                     
-                    {
-                        data.paid ?
-                            <TouchableOpacity
+                    <>
+                        {
+                            data.paid ?
+                                <TouchableOpacity
+                                style={{padding: 8, borderRadius: 24, backgroundColor: theme.colors.background, flexDirection: 'row', alignItems: 'center'}}
+                                onPress={() => handlePaid(data.id)}
+                                activeOpacity={0.7}
+                                >
+                                    <Text style={{paddingHorizontal: 4}}>
+                                        Pago
+                                    </Text>
+                                    <View style={[styles.select,data.type === 'down' ? {backgroundColor: theme.colors.secondary } : {backgroundColor: theme.colors.primary}]} />
+                                </TouchableOpacity>
+                            :                    
+                                <TouchableOpacity
                                 style={{padding: 8, borderRadius: 24, backgroundColor: theme.colors.background}}
-                                onPress={() => handlePaid(data.id)}
-                                activeOpacity={0.7}
-                            >
-                                <View style={[styles.select,data.type === 'down' ? {backgroundColor: theme.colors.secondary } : {backgroundColor: theme.colors.primary}]} />
-                            </TouchableOpacity>
-                        :                    
-                            <TouchableOpacity
-                            style={{padding: 8, borderRadius: 24, backgroundColor: theme.colors.background}}
-                                onPress={() => handlePaid(data.id)}
-                                activeOpacity={0.7}
-                            >
-                                <View style={[styles.select,{backgroundColor: theme.colors.default_light}]} />
-                            </TouchableOpacity>
-                    }
+                                    onPress={() => handlePaid(data.id)}
+                                    activeOpacity={0.7}
+                                >
+                                    <View style={[styles.select,{backgroundColor: theme.colors.default_light}]} />
+                                </TouchableOpacity>
+                        }
+                    </>
                 </View>
                 
                 <Text style={[styles.price, data.type === 'down' ? {color: theme.colors.secondary } : {color: theme.colors.primary}]}>
