@@ -32,7 +32,7 @@
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-1630449266026590~2499372965"
       },
-      "package": "app.ts"
+      "package": "com.shymarrai.MyMoney"
     },
     "web": {
       "favicon": "./assets/favicon.png"
