@@ -21,7 +21,6 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         alignSelf: 'center', 
         alignItems: 'center',
-
         justifyContent: 'center',
       },  
     title:{

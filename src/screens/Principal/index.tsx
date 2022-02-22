@@ -372,9 +372,7 @@ export default function Principal() {
         }}
           colors={[theme.colors.white, theme.colors.shape]}
         >
-          <View style={[styles.containerBranch, 
-            { marginBottom: 30}]}
-          >
+          <View style={[styles.containerBranch]}>
             <Text style={styles.Mybranch}>
               My
             </Text>
@@ -392,10 +390,9 @@ export default function Principal() {
 
           </View>
 
-            
           <ScrollView
-            style={{top: -50}}
             horizontal
+            style={{position: 'absolute', top: '13%'}}
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{paddingLeft: '12%', paddingRight: '12%', alignItems: 'center'}}
           >
@@ -428,14 +425,15 @@ export default function Principal() {
               
           </ScrollView>
             
+            
           <View
             style={{
               width: '90%',
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
-              top: -80,
-              paddingHorizontal: 20
+              paddingHorizontal: '6%',
+              top: '41%'
             }}
           >
             <View
@@ -472,16 +470,16 @@ export default function Principal() {
             isLoading ?
 
               <View
-                style={{height: 365, width: '100%', top: -70}}
+                style={{height: 300, width: '100%', position: 'absolute', top: '55%'}}
               >
                 <Load />
               </View>
 
             :
             <FlatList
-              style={{height: 300, width: '100%', top: -70}}
+              style={{height: 300, width: '100%', top:'30%'}}
               data={data}
-              contentContainerStyle={{paddingTop: 20, paddingBottom: 40}}
+              contentContainerStyle={{paddingTop: 10, paddingBottom: '100%'}}
               keyExtractor={(item) => item.id}
 
               renderItem={({item}) => (

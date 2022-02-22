@@ -66,8 +66,8 @@ export default function App() {
                   onDidFailToReceiveAdWithError={(err) => console.log(err)}
                   style={{
                     alignSelf: 'center',
-                    top: 40,
-                    height: 100,
+                    top: 60,
+                    height: 110,
                   }}
                 />
               </>
