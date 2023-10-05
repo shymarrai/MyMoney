@@ -1,7 +1,7 @@
 import React from 'react'
 import { styles } from './styles'
 import { Text, View, TouchableOpacity, Alert } from 'react-native'
-import { Feather } from '@expo/vector-icons'
+import { Feather, FontAwesome5 } from '@expo/vector-icons'
 import { DataListProps } from '../../screens/Principal'
 import { Swipeable } from 'react-native-gesture-handler'
 import theme from '../../global/styles/theme'
@@ -117,8 +117,16 @@ const navigation = useNavigation <OptionScreenProp>()
                 <View style={styles.containerFooterCard}>
                     <View style={styles.containerCategory}>
                         {
-                            data.category &&
-                                <Feather name={data.category.icon ? data.category.icon : 'info'} color={data.category.color ? data.category.color : theme.colors.default} size={20} style={styles.icon}/>
+                            data?.category &&
+                                <>
+                                    {
+                                        data.category.icon == "church" ?
+                                            <FontAwesome5 name={data.category.icon ? data.category.icon : 'info'} color={data.category.color ? data.category.color : theme.colors.default} size={20} style={styles.icon}/>
+                                        :
+                                            <Feather name={data.category.icon ? data.category.icon : 'info'} color={data.category.color ? data.category.color : theme.colors.default} size={20} style={styles.icon}/>
+
+                                    }
+                                </>
                         }
                         <Text style={styles.categoryName}>
                             { data.category && data.category.name }

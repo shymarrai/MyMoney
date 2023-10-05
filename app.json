@@ -27,7 +27,7 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.shymarrai.MyMoney"
+      "bundleIdentifier": "app.ts"
     },
     "android": {
       "compileSdkVersion": 33,
@@ -35,10 +35,15 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.shymarrai.MyMoney"
+      "package": "app.ts"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9f1d5df5-13a4-4e71-b9fb-067f9f1bb918"
+      }
     }
   },
   "react-native-google-mobile-ads": {

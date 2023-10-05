@@ -82,14 +82,14 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        namespace 'com.shymarrai.MyMoney'
-        testNamespace 'com.shymarrai.MyMoney.test'
+        namespace 'app.ts'
+        testNamespace 'app.ts.test'
         compileSdkVersion 33
-        applicationId 'com.shymarrai.MyMoney'
+        applicationId 'app.ts'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.0.2"
 
         buildConfigField("boolean", "REACT_NATIVE_UNSTABLE_USE_RUNTIME_SCHEDULER_ALWAYS", (findProperty("reactNative.unstable_useRuntimeSchedulerAlways") ?: true).toString())
     }

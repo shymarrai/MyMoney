@@ -1,4 +1,4 @@
-package com.shymarrai.MyMoney;
+package app.ts;
 
 import android.app.Application;
 import android.content.res.Configuration;

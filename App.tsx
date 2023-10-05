@@ -3,7 +3,7 @@ import 'intl/locale-data/jsonp/pt-BR'
 
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { AppOpenAd, TestIds, AdEventType } from 'react-native-google-mobile-ads';
+
 import {NavigationContainer} from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -26,10 +26,11 @@ import CardDetails from './src/screens/CardDetails';
 import IntroMyMoney from './src/screens/IntroStack/IntroMyMoney';
 import IntroPrincipal from './src/screens/IntroStack/IntroPrincipal';
 import IntroDelete from './src/screens/IntroStack/IntroDelete';
+// import { AppOpenAd, InterstitialAd, RewardedAd, BannerAd, TestIds } from 'react-native-google-mobile-ads';
 
 
 
-
+// const adUnitId = __DEV__ ? TestIds.APP_OPEN : 'ca-app-pub-1630449266026590~2499372965'
 export default function App() {
 
   const [intro, setIntro] = useState(false)
@@ -42,17 +43,8 @@ export default function App() {
     Inter_100Thin
   });
 
-  // const appOpenAd = AppOpenAd.createForAdRequest('ca-app-pub-1630449266026590~2499372965', {
-  //   requestNonPersonalizedAdsOnly: true,
-  // });
-  
-  // appOpenAd.load();
-
-
-
   useEffect(() => {
     setIntro(false)
-    // appOpenAd.show();
   },[])
 
   
@@ -107,9 +99,14 @@ export default function App() {
                     servePersonalizedAds
                     onDidFailToReceiveAdWithError={(err) => console.log(err)}
                     style={{
-                      alignSelf: 'center',
-                      top: 60,
-                      height: 110,
+                    }}
+                  /> */}
+                  
+                  {/* <BannerAd
+                    unitId={adUnitId}
+                    size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                    requestOptions={{
+                      requestNonPersonalizedAdsOnly: true,
                     }}
                   /> */}
                 </>

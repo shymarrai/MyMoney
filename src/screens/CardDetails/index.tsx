@@ -29,7 +29,7 @@ import CurrencyInput from 'react-native-currency-input';
 import { CardFlipTransationType } from '../../components/CardFlipTransationType';
 import theme from '../../global/styles/theme';
 import { DataListProps } from '../Principal';
-
+import { MMKV } from 'react-native-mmkv'
 
 type CardDetailsScreenProp = StackNavigationProp<RootStackParamList, 'CardDetails'>;
 
@@ -54,6 +54,9 @@ export interface TransactionProps{
 
 
 const collectionKey = '@mymoney:transactions';
+const storage = new MMKV({ id: '@mymoney:transactions'});
+
+
 export default function CardDetails({ route}: any) {
   const navigation = useNavigation<CardDetailsScreenProp>()
 

@@ -2,7 +2,7 @@
 
 # dependencies
 node_modules/
-
+.better-commits.json
 # Expo
 .expo/
 dist/

@@ -1,5 +1,5 @@
 import React, { useEffect} from 'react'
-import { Feather } from '@expo/vector-icons'
+import { Feather, FontAwesome5 } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 import { 
   TouchableOpacity, 
@@ -74,7 +74,12 @@ export function CardTransactionGradient({ name,date, paid, type, amountFormated,
                     activeOpacity={0.8}
                     onPress={handleModal}
                 >
-                    <Feather name={category.icon ? category.icon : "help-circle"} color={category.color ? category.color : theme.colors.default} size={30}/>
+                  {
+                    category.icon == "church" ?
+                      <FontAwesome5 name={category.icon ? category.icon : "help-circle"} color={category.color ? category.color : theme.colors.default} size={30}/>
+                    :
+                      <Feather name={category.icon ? category.icon : "help-circle"} color={category.color ? category.color : theme.colors.default} size={30}/>
+                  }
                 </TouchableOpacity>
               </View>
             </View>

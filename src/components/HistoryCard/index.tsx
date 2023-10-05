@@ -3,7 +3,7 @@ import {Text, TouchableOpacity, View } from 'react-native';
 
 import { styles } from './styles'
 import theme from '../../global/styles/theme';
-import { Feather } from '@expo/vector-icons';
+import { Feather, FontAwesome5 } from '@expo/vector-icons';
 
 interface Props{
     name: string,
@@ -28,7 +28,12 @@ export default function HistoryCard({
             <View
                 style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}
             >
-                <Feather name={icon} color={color} size={18} />
+                {
+                    icon == "church" ?
+                        <FontAwesome5 name={icon} size={18} color={color} />
+                    :
+                        <Feather name={icon} color={color} size={18} />
+                }
                 <Text
                     style={styles.name}
                 >

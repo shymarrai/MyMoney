@@ -18,14 +18,14 @@ import { Feather, Entypo } from '@expo/vector-icons';
 import CardTransaction from '../../components/CardTransaction';
 import { addMonths, subMonths } from 'date-fns';
 import { BorderlessButton } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../RootStackParamList';
 import { TransactionProps } from '../CardDetails';
 import { CardAmountFlip } from '../../components/CardAmountFlip';
 import theme from '../../global/styles/theme';
 import Load from '../../components/Load';
-
+import moment from 'moment'
 import { format } from 'date-fns/esm';
 import { ptBR } from 'date-fns/locale';
 
@@ -59,33 +59,16 @@ export default function Principal() {
 
   const [ selectedDate, setSelectedDate ] = useState(new Date())
 
-
-  function handleDateChange(action: 'next' | 'prev'){
-    setIsLoading(true)
-    if(action === 'next'){
-      setSelectedDate(addMonths(selectedDate, 1))
-    }else{
-      setSelectedDate(subMonths(selectedDate, 1))
-    }
-    setIsLoading(false)
-  }
+  const isFocused = useIsFocused()
 
   useEffect(() => {
+    setIsLoading(true)
+    console.log('load')
     resetStates()
     loadTransactions()
-  },[selectedDate])
-  
-  useEffect(() => {
-    resetStates()
-    loadTransactions()
-  },[])
 
-  useEffect(() => {
-    // removeAll()
-    setIsLoading(true)
-    resetStates()
-    setIsLoading(false)
-  },[])
+
+  },[isFocused])
   
   useEffect(() => {
     setIsLoading(true)
@@ -122,14 +105,18 @@ export default function Principal() {
     setIsLoading(true)
     const response = await AsyncStorage.getItem(collectionKey)
     const transactions = response ? JSON.parse(response) : []
-
-    const transactionsFiltered = transactions.filter((transaction: DataListProps) =>( 
-      new Date(formatDate(transaction.date)).getMonth() === selectedDate.getMonth() &&
-      new Date(formatDate(transaction.date)).getFullYear() === selectedDate.getFullYear()
-    ))
-
+    
+    const transactionsFiltered = await transactions.filter(async (transaction: DataListProps) => { 
+      const transactionDate = moment(transaction.date, 'DD/MM/YYYY');
+      return (
+        transactionDate.month() === selectedDate.getMonth() &&
+        transactionDate.year() === selectedDate.getFullYear()
+      );
+    })
+      
       
     setData(transactionsFiltered)
+
     if(transactionsFiltered.length >= 1){
       await calculateCurrency(transactionsFiltered)
       const first = getFirstTransactionDate(transactionsFiltered)
@@ -145,8 +132,18 @@ export default function Principal() {
     setIsLoading(false)
   }
 
-  function resetStates(){
+  function handleDateChange(action: 'next' | 'prev'){
     setIsLoading(true)
+    if(action === 'next'){
+      setSelectedDate(addMonths(selectedDate, 1))
+    }else{
+      setSelectedDate(subMonths(selectedDate, 1))
+    }
+    setIsLoading(false)
+  }
+
+  function resetStates(){
+setIsLoading(true)
     setIncomes(0)
     setOutcomes(0)
     setTotal(0)
@@ -158,7 +155,7 @@ export default function Principal() {
     setIncomesNoPaid(0)
     setOutcomesNoPaid(0)
     setTotalNoPaid(0)
-    setIsLoading(false)
+setIsLoading(false)
   }
 
   async function removeItem(id: any){
@@ -189,7 +186,7 @@ export default function Principal() {
   }
 
   async function calculateCurrency(allTransactions:any){
-    setIsLoading(true)
+  // setIsLoading(true)
     allTransactions.map((item: any) => {
       if(item.type === "up"){
         setIncomes(state => state + Number(item.amount))
@@ -223,7 +220,7 @@ export default function Principal() {
   }
 
   function getLastTransactionDate(collection: DataListProps[]){
-    setIsLoading(true)
+    // setIsLoading(true)
 
     const lastTransctionIn = new Date(
       Math.max.apply(Math, collection
@@ -255,7 +252,7 @@ export default function Principal() {
           return new Date(formated).getTime()
         })))
 
-        setIsLoading(false)
+        // setIsLoading(false)
         const last = lastTransctionIn >= lastTransctionOut ? lastTransctionIn : lastTransctionOut
         return Intl.DateTimeFormat('pt-BR', {day: '2-digit', month: '2-digit'}).format(last)
 
@@ -263,7 +260,7 @@ export default function Principal() {
   }
 
   function getFirstTransactionDate(collection: DataListProps[]){
-    setIsLoading(true)
+    // setIsLoading(true)
 
     const firstTransctionIn = new Date(
       Math.min.apply(Math, collection
@@ -296,12 +293,12 @@ export default function Principal() {
         })))
 
         const last = firstTransctionIn <= firstTransctionOut ? firstTransctionIn : firstTransctionOut
-        setIsLoading(false)
+        // setIsLoading(false)
         return Intl.DateTimeFormat('pt-BR', {day: '2-digit', month: '2-digit'}).format(last)
   }
 
   async function handleCardPaid(id: any){
-    setIsLoading(true)
+    // setIsLoading(true)
     
     try{
 
@@ -328,7 +325,7 @@ export default function Principal() {
 
       loadTransactions()
     }
-    setIsLoading(false)
+    // setIsLoading(false)
   }
 
   useEffect(() => navigation.addListener('blur', () => {
@@ -385,7 +382,7 @@ export default function Principal() {
               onPress={() =>  navigation.navigate('IntroMyMoney')}
               style={{padding: 10, right: -80}}
             >
-              <Entypo name="info-with-circle" size={24} color={theme.colors.default} />
+              <Entypo name="help-with-circle" size={24} color={theme.colors.default} />
             </TouchableOpacity>
 
           </View>

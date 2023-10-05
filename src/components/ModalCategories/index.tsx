@@ -1,4 +1,4 @@
-import { Feather } from '@expo/vector-icons'
+import { Feather, FontAwesome5 } from '@expo/vector-icons'
 import React from 'react'
 import { TouchableOpacity, TouchableOpacityProps, View, Text, Modal, FlatList } from 'react-native'
 import { styles } from './styles'
@@ -53,7 +53,12 @@ export function ModalCategories({ open, handleOpen, setCategory} : Props){
                       handleOpen()                              
                     }}
                   >
-                      <Feather name={item.icon} color={item.color} size={18}/>
+                    {
+                      item.icon == "church" ?
+                        <FontAwesome5 name={item.icon} color={item.color} size={18}/>
+                      :
+                        <Feather name={item.icon} color={item.color} size={18}/>
+                    }
                       <Text style={styles.textCategory}>
                         { item.name }
                       </Text>

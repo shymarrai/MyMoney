@@ -1,4 +1,4 @@
-package com.shymarrai.MyMoney;
+package app.ts;
 
 import android.os.Build;
 import android.os.Bundle;
